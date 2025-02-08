@@ -92,12 +92,12 @@ export function EditItemDialog({
       <div className="space-y-6">
         <div className="grid grid-cols-[0.7fr_0.3fr] gap-2">
           <div>
-            <label htmlFor="item" className="sr-only">
-              Item Name
+            <label htmlFor="name" className="sr-only">
+              Edit Item Name
             </label>
             <Input
-              id="item"
-              name="item"
+              id="name"
+              name="name"
               value={localItem?.name || ""}
               onChange={handleInputChange}
               placeholder="Enter item"
@@ -106,7 +106,7 @@ export function EditItemDialog({
           </div>
           <div>
             <label htmlFor="price" className="sr-only">
-              Price
+              Edit Price
             </label>
             <Input
               id="price"

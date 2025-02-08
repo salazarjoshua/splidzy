@@ -35,18 +35,8 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
       <PopoverTrigger asChild>
         <FriendTag name={friend.name} color={friend.color} />
       </PopoverTrigger>
-      <PopoverContent className="w-full max-w-xs rounded-2xl p-2">
-        <form onSubmit={handleSave} className="flex gap-2">
-          <Button
-            type="button"
-            onClick={() => {
-              removeFriend(friend.id);
-              setIsOpen(false);
-            }}
-            className="bg-red-50 text-red-500 hover:bg-red-100"
-          >
-            <Trash className="size-4" />
-          </Button>
+      <PopoverContent className="w-full min-w-[256px] rounded-2xl p-2">
+        <form onSubmit={handleSave} className="flex flex-col gap-2">
           <div className="flex-1 shrink-0">
             <label htmlFor="friend" className="sr-only">
               {"Edit friend's name"}
@@ -59,12 +49,24 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
               maxLength={24}
             />
           </div>
-          <Button
-            type="submit"
-            className="bg-green-500 text-green-50 hover:bg-green-500/90"
-          >
-            <Check className="size-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              onClick={() => {
+                removeFriend(friend.id);
+                setIsOpen(false);
+              }}
+              className="bg-red-50 text-red-500 hover:bg-red-100"
+            >
+              <Trash className="size-4" />
+            </Button>
+            <Button
+              type="submit"
+              className="flex-1 bg-green-500 text-green-50 hover:bg-green-500/90"
+            >
+              <Check className="size-4" />
+            </Button>
+          </div>
         </form>
       </PopoverContent>
     </Popover>
