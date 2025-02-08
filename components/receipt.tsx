@@ -138,7 +138,7 @@ export function Receipt() {
   );
 
   return (
-    <div className="flex-1 font-medium">
+    <main className="flex-1 font-medium">
       {/* Action Buttons */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-1">
@@ -189,8 +189,7 @@ export function Receipt() {
       </div>
 
       <div
-        className="rounded-3xl border border-neutral-200 bg-white p-6"
-        id="capture_div"
+        className="rounded-3xl border border-neutral-200 bg-white px-6 py-6 md:py-12"
         ref={receiptRef}
       >
         {currentItems.length > 0 && (
@@ -204,7 +203,7 @@ export function Receipt() {
         )}
 
         {currentItems.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
+          <div className="flex flex-col items-center justify-center gap-1 py-12 text-center">
             <ReceiptLong className="w-16" />
             <div>
               <h2>No items yet</h2>
@@ -284,6 +283,6 @@ export function Receipt() {
         }}
         selectedFriend={selectedFriend}
       />
-    </div>
+    </main>
   );
 }
