@@ -76,7 +76,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfProRounded.variable} font-sans antialiased`}>
-        {children}
+        <div className="min-h-screen px-4 py-12">{children}</div>
       </body>
     </html>
   );

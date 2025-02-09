@@ -22,11 +22,11 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-12 px-4 py-2",
-        sm: "h-9 rounded-xl px-4 py-0.5",
-        lg: "h-11 rounded-xl px-8",
-        icon: "size-5 [&_svg]:size-3 [&_svg]:shrink-0 rounded-full",
+        sm: "h-9 px-4 py-0.5",
+        lg: "h-11 px-8",
+        icon: "size-8 [&_svg]:size-4 [&_svg]:shrink-0 rounded-full",
         withIcon:
-          "rounded-full p-1 pr-3 h-8 [&_svg]:size-3.5 [&_svg]:shrink-0 text-sm",
+          "rounded-full p-1 pr-3 h-8 [&_svg]:size-3.5 [&_svg]:shrink-0 text-sm gap-1.5",
       },
     },
     defaultVariants: {
@@ -56,9 +56,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-const ButtonIcon = ({ children }: { children: React.ReactNode }) => {
+const ButtonIcon = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
-    <div className="absolute right-0 top-0 flex -translate-y-[2px] translate-x-[2px] items-center justify-center rounded-full border-2 border-black bg-white p-0.5 text-black [&_svg]:size-3 [&_svg]:shrink-0">
+    <div
+      className={cn(
+        "absolute right-0 top-0 flex -translate-y-[2px] translate-x-[2px] items-center justify-center rounded-full border-2 border-black bg-white p-0.5 text-black [&_svg]:size-3 [&_svg]:shrink-0",
+        className,
+      )}
+    >
       {children}
     </div>
   );
