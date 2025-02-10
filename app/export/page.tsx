@@ -6,13 +6,14 @@ import DashedUnderline from "@/components/ui/dashed-underline";
 import { useStore } from "@/store/useStore";
 import { toPng } from "html-to-image";
 import Link from "next/link";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { FriendListEmpty } from "@/components/friends-list-dialog";
 import { ArrowLeft } from "lucide-react";
 
 const Export = () => {
   const { friends, items } = useStore();
   const receiptRef = useRef<HTMLDivElement>(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   const buildPng = async (
     content: HTMLDivElement,
@@ -86,6 +87,29 @@ const Export = () => {
     return sum + amount;
   }, 0);
 
+  const handleCopyReceiptText = () => {
+    if (!friends.length) return;
+
+    const text = friends
+      .map((friend) => {
+        const total = calculateFriendTotal(friend.id);
+        const formattedTotal =
+          total % 1 === 0 ? total.toFixed(0) : total.toFixed(2);
+
+        return `${friend.name} - ${formattedTotal}`;
+      })
+      .join("\n");
+
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setIsCopied(true);
+      })
+      .catch((error) => {
+        console.error("Failed to copy text:", error);
+      });
+  };
+
   return (
     <section className="mx-auto flex flex-col gap-4 sm:max-w-md">
       <div className="flex items-center justify-between">
@@ -152,11 +176,23 @@ const Export = () => {
       </div>
       <div className="flex items-center justify-between gap-2">
         <Button
+          onClick={handleCopyReceiptText}
           variant={"outline"}
-          className="relative"
+          className="relative overflow-hidden"
           disabled={friends.length === 0}
+          onMouseLeave={() => setTimeout(() => setIsCopied(false), 1500)}
+          onBlur={() => setTimeout(() => setIsCopied(false), 1500)}
         >
-          Copy as Text
+          <span
+            className={`${isCopied ? "-translate-y-[150%]" : ""} transition-all`}
+          >
+            Copy as text
+          </span>
+          <span
+            className={`${isCopied ? "translate-y-0" : "translate-y-[150%]"} absolute left-1/2 -translate-x-1/2 transition-all`}
+          >
+            Copied 🥳
+          </span>
         </Button>
         <Button
           onClick={exportReceipt}
