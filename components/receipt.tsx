@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Stars, Download, ReceiptLong, Check } from "./icons";
+import { Stars, Download, ReceiptLong } from "./icons";
 import { X } from "lucide-react";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { FriendTagAvatar } from "./friend-tag";
 import { EditItemDialog } from "@/components/edit-item-dialog";
-import { toPng } from "html-to-image";
 import { useStore } from "@/store/useStore";
 import type { Item } from "@/types";
 import React from "react";
