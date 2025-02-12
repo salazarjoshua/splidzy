@@ -1,20 +1,13 @@
 import React, { useCallback, useRef, useState } from "react";
-import { useStore } from "@/store/useStore";
+import { useStore, colors } from "@/store/useStore";
 import { Input } from "@/components/ui/input";
-import { Button, ButtonIcon } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import { Friend } from "@/types";
 import { FriendTag } from "./friend-tag";
 import { v4 as uuidv4 } from "uuid";
 import { Check } from "./icons";
-
-const colors: ("green" | "pink" | "purple" | "blue")[] = [
-  "green",
-  "pink",
-  "purple",
-  "blue",
-];
 
 const AddFriends = () => {
   const { friends, addFriend } = useStore();
@@ -125,7 +118,7 @@ const AddFriends = () => {
           )}
 
           <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-6">
-            <div className="text-sm font-medium text-gray-400">
+            <div className="text-sm font-medium text-neutral-400">
               {localFriends.length > 0 && (
                 <p>
                   Adding {localFriends.length} friend

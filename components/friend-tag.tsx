@@ -5,30 +5,31 @@ import { Minus } from "lucide-react";
 import { Check } from "./icons";
 
 const getInitial = (name: string) => {
-  const match = name.trim().match(/[a-zA-ZÀ-ÖØ-öø-ÿ]/);
-  return match ? match[0].toUpperCase() : "?";
+  const match = name
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.match(/[a-zA-ZÀ-ÖØ-öø-ÿ]/)?.[0])
+    .filter(Boolean);
+
+  return match.length > 1
+    ? match[0]!.toUpperCase() + match[1]!.toUpperCase()
+    : match[0]?.toUpperCase() || "😗";
 };
 
 const colorStyles = {
-  green: {
-    default: "bg-green-50 text-green-500",
-  },
-  pink: {
-    default: "bg-pink-50 text-pink-500",
-  },
-  purple: {
-    default: "bg-purple-50 text-purple-500",
-  },
-  blue: {
-    default: "bg-blue-50 text-blue-500",
-  },
-};
+  yellow: "bg-yellow-200 text-yellow-900",
+  lime: "bg-lime-200 text-lime-900",
+  lavender: "bg-purple-200 text-purple-900",
+  sky: "bg-blue-200 text-blue-900",
+  peach: "bg-orange-200 text-orange-900",
+  rose: "bg-rose-200 text-rose-900",
+} as const;
 
 type FriendTagVariant = "default" | "delete" | "select";
 
 interface FriendTagProps extends Omit<ButtonProps, "variant"> {
   selected?: boolean;
-  color?: "green" | "pink" | "purple" | "blue";
+  color?: keyof typeof colorStyles;
   name: string;
   friendTagVariant?: FriendTagVariant;
 }
@@ -36,7 +37,7 @@ interface FriendTagProps extends Omit<ButtonProps, "variant"> {
 interface FriendTagAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   selected?: boolean;
-  color?: "green" | "pink" | "purple" | "blue";
+  color?: keyof typeof colorStyles;
   variant?: FriendTagVariant;
 }
 
@@ -44,7 +45,7 @@ export const FriendTag = React.forwardRef<HTMLButtonElement, FriendTagProps>(
   (
     {
       selected,
-      color = "blue",
+      color = "yellow",
       name,
       friendTagVariant = "default",
       className,
@@ -78,7 +79,7 @@ FriendTag.displayName = "FriendTag";
 export function FriendTagAvatar({
   name,
   selected,
-  color = "blue",
+  color = "yellow",
   variant = "default",
   className,
   ...props
@@ -95,7 +96,7 @@ export function FriendTagAvatar({
         <div
           className={cn(
             "flex size-full items-center justify-center rounded-full text-lg font-bold transition-colors",
-            colorStyles[color]["default"],
+            colorStyles[color],
             className,
           )}
           {...props}
@@ -116,7 +117,7 @@ export function FriendTagAvatar({
               selected ? "border-white bg-white text-green-500" : "bg-white",
             )}
           >
-            {selected ? <Check className="size-4" /> : null}
+            {selected && <Check className="size-4" />}
           </div>
         )}
       </div>

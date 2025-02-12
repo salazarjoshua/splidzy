@@ -1,7 +1,7 @@
 interface Friend {
   id: string;
   name: string;
-  color: "green" | "pink" | "purple" | "blue";
+  color: "yellow" | "lavender" | "sky" | "peach" | "rose" | "lime";
 }
 
 interface Item {

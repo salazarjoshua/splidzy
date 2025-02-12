@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 interface Friend {
   id: string;
   name: string;
-  color: "green" | "pink" | "purple" | "blue";
+  color: "yellow" | "lime" | "lavender" | "sky" | "peach" | "rose";
 }
 
 interface Item {
@@ -25,12 +25,14 @@ interface ReceiptStore {
   removeItem: (id: number) => void;
 }
 
-const colors: ("green" | "pink" | "purple" | "blue")[] = [
-  "green",
-  "pink",
-  "purple",
-  "blue",
-];
+export const colors: (
+  | "yellow"
+  | "lavender"
+  | "sky"
+  | "peach"
+  | "rose"
+  | "lime"
+)[] = ["yellow", "lavender", "sky", "peach", "rose", "lime"];
 
 export const useStore = create<ReceiptStore>((set) => ({
   friends: [{ id: uuidv4(), name: "Me", color: colors[0] }],
