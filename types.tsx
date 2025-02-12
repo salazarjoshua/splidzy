@@ -1,5 +1,5 @@
 interface Friend {
-  id: number;
+  id: string;
   name: string;
   color: "green" | "pink" | "purple" | "blue";
 }

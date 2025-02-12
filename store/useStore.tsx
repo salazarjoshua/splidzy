@@ -1,7 +1,8 @@
 import { create } from "zustand";
+import { v4 as uuidv4 } from "uuid";
 
 interface Friend {
-  id: number;
+  id: string;
   name: string;
   color: "green" | "pink" | "purple" | "blue";
 }
@@ -10,15 +11,15 @@ interface Item {
   id: number;
   name: string;
   price: number;
-  assignedTo: number[];
+  assignedTo: string[];
 }
 
 interface ReceiptStore {
   friends: Friend[];
   items: Item[];
   addFriend: (name: string) => void;
-  editFriend: (id: number, name: string) => void;
-  removeFriend: (id: number) => void;
+  editFriend: (id: string, name: string) => void;
+  removeFriend: (id: string) => void;
   addItem: (item: Omit<Item, "id">) => void;
   editItem: (item: Item) => void;
   removeItem: (id: number) => void;
@@ -32,14 +33,14 @@ const colors: ("green" | "pink" | "purple" | "blue")[] = [
 ];
 
 export const useStore = create<ReceiptStore>((set) => ({
-  friends: [],
+  friends: [{ id: uuidv4(), name: "Me", color: colors[0] }],
   items: [],
   addFriend: (name) =>
     set((state) => ({
       friends: [
         ...state.friends,
         {
-          id: Date.now(),
+          id: uuidv4(),
           name,
           color: colors[state.friends.length % colors.length],
         },
