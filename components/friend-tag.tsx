@@ -1,6 +1,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
+import { Minus } from "lucide-react";
+import { Check } from "./icons";
 
 const getInitial = (name: string) => {
   const match = name.trim().match(/[a-zA-ZÀ-ÖØ-öø-ÿ]/);
@@ -9,49 +11,63 @@ const getInitial = (name: string) => {
 
 const colorStyles = {
   green: {
-    selected: "bg-green-500 text-green-100",
-    default: "bg-green-100 text-green-500 group-hover:bg-green-200",
+    default: "bg-green-50 text-green-500",
   },
   pink: {
-    selected: "bg-pink-500 text-pink-100",
-    default: "bg-pink-100 text-pink-500 group-hover:bg-pink-200",
+    default: "bg-pink-50 text-pink-500",
   },
   purple: {
-    selected: "bg-purple-500 text-purple-100",
-    default: "bg-purple-100 text-purple-500 group-hover:bg-purple-200",
+    default: "bg-purple-50 text-purple-500",
   },
   blue: {
-    selected: "bg-blue-500 text-blue-100",
-    default: "bg-blue-100 text-blue-500 group-hover:bg-blue-200",
+    default: "bg-blue-50 text-blue-500",
   },
 };
 
-interface FriendTagProps extends ButtonProps {
+type FriendTagVariant = "default" | "delete" | "select";
+
+interface FriendTagProps extends Omit<ButtonProps, "variant"> {
   selected?: boolean;
   color?: "green" | "pink" | "purple" | "blue";
   name: string;
+  friendTagVariant?: FriendTagVariant;
 }
 
 interface FriendTagAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   selected?: boolean;
   color?: "green" | "pink" | "purple" | "blue";
+  variant?: FriendTagVariant;
 }
 
 export const FriendTag = React.forwardRef<HTMLButtonElement, FriendTagProps>(
-  ({ selected, color = "blue", name, className, ...props }, ref) => {
+  (
+    {
+      selected,
+      color = "blue",
+      name,
+      friendTagVariant = "default",
+      className,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <Button
         ref={ref}
         variant="outline"
         className={cn(
           "flex h-auto w-16 flex-col items-center justify-center gap-1.5 border-0 px-1.5 py-1 font-medium hover:bg-transparent",
-          selected && "bg-neutral-900 text-white hover:bg-neutral-900/90",
           className,
         )}
         {...props}
       >
-        <FriendTagAvatar name={name} color={color} selected={selected} />
+        <FriendTagAvatar
+          name={name}
+          color={color}
+          selected={selected}
+          variant={friendTagVariant}
+        />
       </Button>
     );
   },
@@ -63,6 +79,7 @@ export function FriendTagAvatar({
   name,
   selected,
   color = "blue",
+  variant = "default",
   className,
   ...props
 }: FriendTagAvatarProps) {
@@ -70,17 +87,40 @@ export function FriendTagAvatar({
     <>
       <div
         className={cn(
-          "flex size-16 shrink-0 items-center justify-center rounded-full text-lg font-bold transition-colors",
-          colorStyles[color][selected ? "selected" : "default"],
-          className,
+          "relative size-16 shrink-0 rounded-full border-2 border-transparent p-0.5",
+          variant === "select" && "border-neutral-100",
+          selected && "border-green-500 text-green-100",
         )}
-        {...props}
       >
-        {getInitial(name)}
+        <div
+          className={cn(
+            "flex size-full items-center justify-center rounded-full text-lg font-bold transition-colors",
+            colorStyles[color]["default"],
+            className,
+          )}
+          {...props}
+        >
+          {getInitial(name)}
+        </div>
+
+        {variant === "delete" && (
+          <div className="absolute left-0 top-0 flex size-5 -translate-x-1 items-center justify-center rounded-full bg-neutral-200 text-neutral-600 transition-colors group-hover:bg-red-500 group-hover:text-white [&_svg]:size-3">
+            <Minus strokeWidth={3} />
+          </div>
+        )}
+
+        {variant === "select" && (
+          <div
+            className={cn(
+              "absolute bottom-0 right-0 flex size-5 translate-x-1 items-center justify-center rounded-full border-2 border-neutral-100 bg-white text-white transition-transform [&_svg]:size-5",
+              selected ? "border-white bg-white text-green-500" : "bg-white",
+            )}
+          >
+            {selected ? <Check className="size-4" /> : null}
+          </div>
+        )}
       </div>
-      <span className={cn("w-full truncate text-sm", selected && "text-white")}>
-        {name}
-      </span>
+      <span className="w-full truncate text-sm">{name}</span>
     </>
   );
 }

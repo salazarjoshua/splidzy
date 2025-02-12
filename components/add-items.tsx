@@ -98,6 +98,7 @@ export function AddItems() {
                   name={friend.name}
                   color={friend.color}
                   selected={newItem.assignedTo.includes(friend.id)}
+                  friendTagVariant="select"
                 />
               ))}
             </div>

@@ -9,8 +9,8 @@ export function ManageFriends() {
   const { friends } = useStore();
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white px-4 py-2">
-      <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 py-2">
+    <div className="relative flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white px-4 py-2">
+      <div className="no-scrollbar -mx-4 flex gap-1.5 overflow-x-auto px-4 py-2">
         <AddFriends />
         {friends.map((friend) => (
           <div key={friend.id}>

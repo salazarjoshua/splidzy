@@ -64,20 +64,19 @@ const AddFriends = () => {
 
   const handleOpenChange = useCallback((open: boolean) => {
     setIsOpen(open);
-    // if (!open) {
-    //   setLocalFriends([]);
-    // }
   }, []);
 
   return (
     <>
       <Button
-        className="flex h-auto w-16 flex-col items-center justify-center gap-1 border-0 bg-transparent px-1.5 py-1 text-sm font-medium hover:bg-transparent"
+        className="flex size-16 h-auto w-16 flex-col items-center justify-center gap-1.5 border-0 bg-transparent px-1.5 py-1 text-sm font-medium hover:bg-transparent"
         variant="secondary"
         onClick={() => setIsOpen(true)}
       >
-        <div className="relative flex aspect-square size-16 items-center justify-center rounded-full border-2 border-dashed border-neutral-200 bg-white text-neutral-500 transition-colors group-hover:bg-neutral-100">
-          <Plus strokeWidth="3" size={16} />
+        <div className="flex size-16 items-center justify-center">
+          <div className="relative flex aspect-square size-14 items-center justify-center rounded-full border-2 border-dashed border-neutral-200 bg-white text-neutral-500 transition-colors group-hover:bg-neutral-100">
+            <Plus strokeWidth="3" size={16} />
+          </div>
         </div>
         Add
       </Button>
@@ -111,7 +110,7 @@ const AddFriends = () => {
           {localFriends.length > 0 && (
             <div
               ref={friendsListRef}
-              className="no-scrollbar -mx-6 -my-2 flex gap-3 overflow-x-auto scroll-smooth px-6 py-2"
+              className="no-scrollbar -mx-6 -my-2 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2"
             >
               {localFriends.map((friend) => (
                 <FriendTag
@@ -119,18 +118,19 @@ const AddFriends = () => {
                   name={friend.name}
                   color={friend.color}
                   onClick={() => removeLocalFriend(friend.id)}
+                  friendTagVariant="delete"
                 />
               ))}
             </div>
           )}
 
           <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-6">
-            <div className="text-sm font-medium text-neutral-400">
+            <div className="text-sm font-medium text-gray-400">
               {localFriends.length > 0 && (
-                <>
-                  Add {localFriends.length} friend
-                  {localFriends.length !== 1 && "s"}
-                </>
+                <p>
+                  Adding {localFriends.length} friend
+                  {localFriends.length > 1 ? "s" : ""}
+                </p>
               )}
             </div>
             <Button
