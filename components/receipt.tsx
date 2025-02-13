@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download } from "./icons";
-import { Button, ButtonIcon } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { FriendTagAvatar } from "./friend-tag";
 import { EditItemDialog } from "@/components/edit-item-dialog";
 import { useStore } from "@/store/useStore";
@@ -28,13 +27,13 @@ export function Receipt() {
             item.assignedTo.includes(selectedFriend),
         );
 
-  // const total = currentItems.reduce((sum, item) => {
-  //   const amount =
-  //     selectedFriend === "all"
-  //       ? item.price
-  //       : item.price / (item.assignedTo.length || friends.length);
-  //   return sum + amount;
-  // }, 0);
+  const total = currentItems.reduce((sum, item) => {
+    const amount =
+      selectedFriend === "all"
+        ? item.price
+        : item.price / (item.assignedTo.length || friends.length);
+    return sum + amount;
+  }, 0);
 
   const renderAssignedFriends = (
     isAllFriends: boolean,
@@ -138,12 +137,7 @@ export function Receipt() {
       </div>
 
       <Button asChild className="relative w-full">
-        <Link href={"export"}>
-          <ButtonIcon>
-            <Download />
-          </ButtonIcon>
-          Split Bills
-        </Link>
+        <Link href={"export"}>Split Bills - ({total})</Link>
       </Button>
 
       <EditItemDialog

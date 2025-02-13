@@ -1,23 +1,13 @@
 import * as React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FriendTag } from "./friend-tag";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { useStore } from "@/store/useStore";
 import { Check, Trash } from "./icons";
 import { Item, Friend } from "@/types";
+import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
+import { Switch } from "./ui/switch";
+import { useEffect } from "react";
 
 interface EditItemDialogProps {
   open: boolean;
@@ -35,12 +25,15 @@ export function EditItemDialog({
   onItemChange,
 }: EditItemDialogProps) {
   const { removeItem } = useStore();
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [localItem, setLocalItem] = React.useState<Item | null>(item);
+  const [localItem, setLocalItem] = React.useState<Item | null>(null);
+  const [selectAll, setSelectAll] = React.useState(true);
 
-  React.useEffect(() => {
-    setLocalItem(item);
-  }, [item]);
+  useEffect(() => {
+    if (open && item) {
+      setLocalItem(item);
+      setSelectAll(item.isAllFriends);
+    }
+  }, [item, open]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (localItem) {
@@ -54,127 +47,123 @@ export function EditItemDialog({
     }
   };
 
-  const toggleFriend = (friendId: number) => {
-    if (localItem) {
-      const newAssignedTo = localItem.assignedTo.includes(friendId)
-        ? localItem.assignedTo.filter((id) => id !== friendId)
-        : [...localItem.assignedTo, friendId];
-      setLocalItem({
-        ...localItem,
-        assignedTo: newAssignedTo,
-      });
-    }
+  const toggleFriendAssignment = (friendId: string) => {
+    if (!localItem) return;
+
+    setLocalItem((prev) => {
+      if (!prev) return null;
+
+      const updatedAssignedTo = prev.assignedTo.includes(friendId)
+        ? prev.assignedTo.filter((id) => id !== friendId)
+        : [...prev.assignedTo, friendId];
+
+      const isManuallyDeselecting = updatedAssignedTo.length !== friends.length;
+
+      return {
+        ...prev,
+        assignedTo: updatedAssignedTo,
+        isAllFriends: isManuallyDeselecting ? false : prev.isAllFriends,
+      };
+    });
+
+    setSelectAll(
+      (prev) => prev && friends.length === localItem?.assignedTo.length + 1,
+    );
+  };
+
+  const handleSelectAllToggle = (checked: boolean) => {
+    if (!localItem) return;
+
+    setSelectAll(checked);
+    setLocalItem({
+      ...localItem,
+      assignedTo: checked ? friends.map((friend) => friend.id) : [],
+      isAllFriends: checked,
+    });
   };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (localItem) {
       onItemChange(localItem);
       onOpenChange(false);
     }
   };
 
-  const content = (
-    <form onSubmit={handleSave} className="contents">
-      <div className="space-y-6">
-        <div className="grid grid-cols-[0.7fr_0.3fr] gap-2">
-          <div>
-            <label htmlFor="name" className="sr-only">
-              Edit Item Name
-            </label>
-            <Input
-              id="name"
-              name="name"
-              value={localItem?.name || ""}
-              onChange={handleInputChange}
-              placeholder="Enter item"
-              maxLength={40}
-            />
-          </div>
-          <div>
-            <label htmlFor="price" className="sr-only">
-              Edit Price
-            </label>
-            <Input
-              id="price"
-              name="price"
-              type="number"
-              step="0.01"
-              value={localItem?.price || ""}
-              onChange={handleInputChange}
-              placeholder="Price"
-              min={1}
-              max={1_000_000}
-            />
-          </div>
-        </div>
-        {friends.length > 0 && (
-          <div className="space-y-4">
-            <div className="space-y-0.5 text-sm">
-              <h3 className="font-semibold">Assign to</h3>
-              <p className="text-sm text-neutral-500">
-                Skip selection to include everyone
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {friends.map((friend) => (
-                <FriendTag
-                  key={friend.id}
-                  type="button"
-                  onClick={() => toggleFriend(friend.id)}
-                  name={friend.name}
-                  selected={localItem?.assignedTo.includes(friend.id)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="flex justify-end gap-2">
-        <Button
-          type="button"
-          onClick={() => {
-            if (localItem) {
-              removeItem(localItem.id);
-              onOpenChange(false);
-            }
-          }}
-          className="bg-red-50 text-red-500 hover:bg-red-100"
-        >
-          <Trash className="size-4" />
-        </Button>
-        <Button
-          type="submit"
-          className="flex-1 bg-green-500 text-green-50 hover:bg-green-500/90"
-        >
-          <Check className="size-4" />
-        </Button>
-      </div>
-    </form>
-  );
-
-  if (isDesktop) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-md" aria-describedby={undefined}>
-          <DialogHeader>
-            <DialogTitle>Edit Item</DialogTitle>
-          </DialogHeader>
-          {content}
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent aria-describedby={undefined}>
-        <DrawerHeader>
-          <DrawerTitle>Edit Item</DrawerTitle>
-        </DrawerHeader>
-        <div className="flex flex-col gap-6 px-6 pb-6">{content}</div>
-      </DrawerContent>
-    </Drawer>
+    <ResponsiveDialogDrawer
+      title="Edit item"
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <form onSubmit={handleSave} className="contents">
+        <div className="grid grid-cols-[0.7fr_0.3fr] gap-2">
+          <Input
+            id="name"
+            name="name"
+            value={localItem?.name || ""}
+            onChange={handleInputChange}
+            placeholder="Enter item"
+            maxLength={40}
+          />
+          <Input
+            id="price"
+            name="price"
+            type="number"
+            step="0.01"
+            value={localItem?.price || ""}
+            onChange={handleInputChange}
+            placeholder="Price"
+            min={1}
+            max={1_000_000}
+          />
+        </div>
+
+        <div className="flex items-center justify-between gap-16 space-y-0.5 text-sm">
+          <div className="space-y-0.5 text-sm">
+            <h3 className="font-semibold">Assign to all</h3>
+            <p className="text-gray-500">
+              New friends will be assigned automatically.
+            </p>
+          </div>
+          <Switch checked={selectAll} onCheckedChange={handleSelectAllToggle} />
+        </div>
+
+        <div className="no-scrollbar -mx-6 -mb-2 -mt-4 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2">
+          {friends.map((friend) => (
+            <FriendTag
+              type="button"
+              key={friend.id}
+              onClick={() => toggleFriendAssignment(friend.id)}
+              name={friend.name}
+              color={friend.color}
+              selected={localItem?.assignedTo.includes(friend.id)}
+              friendTagVariant="select"
+            />
+          ))}
+        </div>
+
+        <div className="flex justify-end gap-2 border-t border-neutral-200 pt-6">
+          <Button
+            type="button"
+            onClick={() => {
+              if (localItem) {
+                removeItem(localItem.id);
+                onOpenChange(false);
+              }
+            }}
+            className="bg-red-50 text-red-500 hover:bg-red-100"
+          >
+            <Trash className="size-4" />
+          </Button>
+          <Button
+            type="submit"
+            className="flex-1 bg-green-500 text-green-50 hover:bg-green-500/90"
+          >
+            <Check className="size-4" />
+          </Button>
+        </div>
+      </form>
+    </ResponsiveDialogDrawer>
   );
 }

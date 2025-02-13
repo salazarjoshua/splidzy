@@ -54,7 +54,6 @@ export function AddItems() {
         ? prev.assignedTo.filter((id) => id !== friendId)
         : [...prev.assignedTo, friendId];
 
-      // If user manually unselects a friend, turn off `isAllFriends`
       const isManuallyDeselecting = updatedAssignedTo.length !== friends.length;
 
       return {
@@ -74,7 +73,7 @@ export function AddItems() {
     setNewItem((prev) => ({
       ...prev,
       assignedTo: checked ? friends.map((friend) => friend.id) : [],
-      isAllFriends: checked, // Only enable isAllFriends when toggling ON
+      isAllFriends: checked,
     }));
   };
 
