@@ -27,16 +27,22 @@ export const useStore = create<ReceiptStore>((set) => ({
   items: [],
 
   addFriend: (name) =>
-    set((state) => ({
-      friends: [
-        ...state.friends,
-        {
-          id: uuidv4(),
-          name,
-          color: colors[state.friends.length % colors.length],
-        },
-      ],
-    })),
+    set((state) => {
+      const newFriend = {
+        id: uuidv4(),
+        name,
+        color: colors[state.friends.length % colors.length],
+      };
+
+      return {
+        friends: [...state.friends, newFriend],
+        items: state.items.map((item) =>
+          item.isAllFriends
+            ? { ...item, assignedTo: [...item.assignedTo, newFriend.id] }
+            : item,
+        ),
+      };
+    }),
 
   editFriend: (id, name) =>
     set((state) => ({

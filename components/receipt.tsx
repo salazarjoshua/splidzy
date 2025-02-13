@@ -23,8 +23,7 @@ export function Receipt() {
       ? items
       : items.filter(
           (item) =>
-            item.assignedTo.length === 0 ||
-            item.assignedTo.includes(selectedFriend),
+            item.isAllFriends || item.assignedTo.includes(selectedFriend),
         );
 
   const total = currentItems.reduce((sum, item) => {
@@ -51,7 +50,9 @@ export function Receipt() {
       );
     }
 
-    const assignedFriends = friends.filter((f) => assignedTo.includes(f.id));
+    const assignedFriends = isAllFriends
+      ? friends
+      : friends.filter((f) => assignedTo.includes(f.id));
     const displayedFriends = assignedFriends.slice(0, 3);
     const remainingCount = assignedFriends.length - 3;
 
@@ -79,59 +80,58 @@ export function Receipt() {
   return (
     <>
       <div className="flex w-full flex-col rounded-3xl border border-neutral-200 bg-white p-4">
-        {currentItems.length !== 0 && (
-          <>
-            {currentItems.map((item, index) => (
-              <div key={item.id}>
-                <Button
-                  onClick={() => setEditingItem(item)}
-                  variant="secondary"
-                  className="relative h-auto w-full rounded-2xl bg-transparent p-4"
-                >
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center justify-between gap-2 md:gap-8">
-                      <h3 className="truncate">{item.name}</h3>
-                      <div className="shrink-0">
-                        {(selectedFriend === "all"
-                          ? item.price
-                          : item.price /
-                            (item.assignedTo.length || friends.length)
-                        ).toLocaleString("en-US", {
+        <>
+          {currentItems.map((item, index) => (
+            <div key={item.id}>
+              <Button
+                onClick={() => setEditingItem(item)}
+                variant="secondary"
+                className="relative h-auto w-full rounded-2xl bg-transparent p-4"
+              >
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center justify-between gap-2 md:gap-8">
+                    <h3 className="truncate">{item.name}</h3>
+                    <div className="shrink-0">
+                      {(selectedFriend === "all"
+                        ? item.price
+                        : item.price /
+                          (item.assignedTo.length || friends.length)
+                      ).toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
+                    <div className="text-sm">
+                      {renderAssignedFriends(
+                        item.isAllFriends,
+                        item.assignedTo,
+                      )}
+                    </div>
+                    <div className="text-sm">
+                      {(item.price / item.assignedTo.length).toLocaleString(
+                        "en-US",
+                        {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
-                        })}
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
-                      <div className="text-sm">
-                        {renderAssignedFriends(
-                          item.isAllFriends,
-                          item.assignedTo,
-                        )}
-                      </div>
-                      <div className="text-sm">
-                        {(item.price / item.assignedTo.length).toLocaleString(
-                          "en-US",
-                          {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          },
-                        )}{" "}
-                        each
-                      </div>
+                        },
+                      )}{" "}
+                      each
                     </div>
                   </div>
-                </Button>
-                {index !== currentItems.length - 1 && (
-                  <div className="px-4 text-neutral-100">
-                    <DashedUnderline />
-                  </div>
-                )}
-              </div>
-            ))}
-          </>
-        )}
-        <div className="mt-4">
+                </div>
+              </Button>
+              {index !== currentItems.length - 1 && (
+                <div className="px-4 text-neutral-100">
+                  <DashedUnderline />
+                </div>
+              )}
+            </div>
+          ))}
+        </>
+
+        <div className={`${currentItems.length !== 0 && "mt-4"}`}>
           <AddItems />
         </div>
       </div>
