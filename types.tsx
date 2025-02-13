@@ -8,7 +8,7 @@ interface Item {
   id: number;
   name: string;
   price: number;
-  assignedTo: number[];
+  assignedTo: string[];
 }
 
 export type { Friend, Item };

@@ -82,7 +82,7 @@ const AddFriends = () => {
         <>
           <form onSubmit={addLocalFriend} className="flex gap-2">
             <label htmlFor="friend" className="sr-only">
-              Enter friend's name
+              {"Enter friend's name"}
             </label>
             <Input
               id="friend"

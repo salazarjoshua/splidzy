@@ -8,10 +8,11 @@ interface Friend {
 }
 
 interface Item {
-  id: number;
+  id: string;
   name: string;
   price: number;
   assignedTo: string[];
+  isAllFriends: boolean;
 }
 
 interface ReceiptStore {
@@ -22,7 +23,7 @@ interface ReceiptStore {
   removeFriend: (id: string) => void;
   addItem: (item: Omit<Item, "id">) => void;
   editItem: (item: Item) => void;
-  removeItem: (id: number) => void;
+  removeItem: (id: string) => void;
 }
 
 export const colors: (
@@ -37,6 +38,7 @@ export const colors: (
 export const useStore = create<ReceiptStore>((set) => ({
   friends: [{ id: uuidv4(), name: "Me", color: colors[0] }],
   items: [],
+
   addFriend: (name) =>
     set((state) => ({
       friends: [
@@ -48,30 +50,40 @@ export const useStore = create<ReceiptStore>((set) => ({
         },
       ],
     })),
+
   editFriend: (id, name) =>
     set((state) => ({
       friends: state.friends.map((friend) =>
         friend.id === id ? { ...friend, name } : friend,
       ),
     })),
+
   removeFriend: (id) =>
     set((state) => ({
       friends: state.friends.filter((f) => f.id !== id),
       items: state.items.map((item) => ({
         ...item,
-        assignedTo: item.assignedTo.filter((fid) => fid !== id),
+        assignedTo: item.isAllFriends
+          ? item.assignedTo
+          : item.assignedTo.filter((fid) => fid !== id),
       })),
     })),
+
   addItem: (newItem) =>
     set((state) => ({
-      items: [...state.items, { id: Date.now(), ...newItem }],
+      items: [
+        ...state.items,
+        { id: uuidv4(), ...newItem, isAllFriends: newItem.isAllFriends },
+      ],
     })),
+
   editItem: (updatedItem) =>
     set((state) => ({
       items: state.items.map((item) =>
         item.id === updatedItem.id ? updatedItem : item,
       ),
     })),
+
   removeItem: (id) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),

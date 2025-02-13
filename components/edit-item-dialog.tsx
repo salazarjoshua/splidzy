@@ -136,7 +136,6 @@ export function EditItemDialog({
                   type="button"
                   onClick={() => toggleFriend(friend.id)}
                   name={friend.name}
-                  color={friend.color}
                   selected={localItem?.assignedTo.includes(friend.id)}
                 />
               ))}

@@ -12,6 +12,7 @@ import React from "react";
 import { FriendsListDialog } from "@/components/friends-list-dialog";
 import DashedUnderline from "./ui/dashed-underline";
 import Link from "next/link";
+import { AddItems } from "./add-items";
 
 export function Receipt() {
   const { friends, items, editItem } = useStore();
@@ -25,7 +26,7 @@ export function Receipt() {
       : items.filter(
           (item) =>
             item.assignedTo.length === 0 ||
-            item.assignedTo.includes(Number.parseInt(selectedFriend)),
+            item.assignedTo.includes(selectedFriend),
         );
 
   const total = currentItems.reduce((sum, item) => {
@@ -36,7 +37,7 @@ export function Receipt() {
     return sum + amount;
   }, 0);
 
-  const renderAssignedFriends = (assignedTo: number[]) => {
+  const renderAssignedFriends = (assignedTo: string[]) => {
     if (assignedTo.length === 0) {
       return (
         <div className="flex items-center gap-1 text-neutral-600">
@@ -58,8 +59,7 @@ export function Receipt() {
           {displayedFriends.map((friend) => (
             <FriendTagAvatar
               key={friend.id}
-              initial={friend.name}
-              color={friend.color}
+              name={friend.name}
               className="border-2 border-white"
             />
           ))}
@@ -78,8 +78,9 @@ export function Receipt() {
   );
 
   return (
-    <main className="flex max-w-lg flex-col gap-4 md:w-full">
+    <>
       <div className="w-full rounded-3xl border border-neutral-200 bg-white p-6">
+        <AddItems />
         {currentItems.length > 0 && (
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-center text-2xl font-bold">Receipt</h2>
@@ -102,7 +103,7 @@ export function Receipt() {
                   <>
                     <div className="flex size-5 items-center justify-center rounded-full bg-yellow-50 text-white">
                       <FriendTagAvatar
-                        initial={selectedFriendData.name}
+                        name={selectedFriendData.name}
                         color={selectedFriendData.color}
                         className="h-6 w-6"
                       />
@@ -127,20 +128,7 @@ export function Receipt() {
           </div>
         )}
 
-        {currentItems.length === 0 ? (
-          // Empty state
-          <div className="flex flex-col items-center justify-center gap-1 py-12 text-center">
-            <ReceiptLong className="w-16" />
-            <div>
-              <h2>No items yet</h2>
-              <p className="font-medium text-neutral-500">
-                <span className="text-neutral-500">
-                  Is this what financial freedom feels like?
-                </span>
-              </p>
-            </div>
-          </div>
-        ) : (
+        {currentItems.length !== 0 && (
           <>
             <div className="space-y-1">
               {currentItems.map((item) => (
@@ -220,6 +208,6 @@ export function Receipt() {
         }}
         selectedFriend={selectedFriend}
       />
-    </main>
+    </>
   );
 }
