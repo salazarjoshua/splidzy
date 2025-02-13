@@ -45,7 +45,7 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
               id="friend"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter friend's name"
+              placeholder="Enter a friend's name"
               maxLength={24}
             />
           </div>

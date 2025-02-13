@@ -82,13 +82,13 @@ const AddFriends = () => {
         <>
           <form onSubmit={addLocalFriend} className="flex gap-2">
             <label htmlFor="friend" className="sr-only">
-              {"Enter friend's name"}
+              {"Enter a friend's name"}
             </label>
             <Input
               id="friend"
               value={newFriend}
               onChange={(e) => setNewFriend(e.target.value)}
-              placeholder="Enter friend's name"
+              placeholder="Enter a friend's name"
               className="flex-grow"
               maxLength={16}
             />
