@@ -90,7 +90,7 @@ const AddFriends = () => {
               onChange={(e) => setNewFriend(e.target.value)}
               placeholder="Enter a friend's name"
               className="flex-grow"
-              maxLength={16}
+              maxLength={24}
             />
             <Button
               type="submit"

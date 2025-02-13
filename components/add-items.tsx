@@ -122,7 +122,7 @@ export function AddItems() {
             />
           </div>
 
-          <div className="flex items-center justify-between gap-16 space-y-0.5 text-sm">
+          <div className="flex items-center justify-between gap-2 space-y-0.5 text-sm">
             <div className="space-y-0.5 text-sm">
               <h3 className="font-semibold">Assign to all</h3>
               <p className="text-gray-500">

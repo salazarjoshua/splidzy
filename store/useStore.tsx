@@ -23,7 +23,7 @@ export const colors: (
 )[] = ["yellow", "lavender", "sky", "peach", "rose", "lime"];
 
 export const useStore = create<ReceiptStore>((set) => ({
-  friends: [{ id: uuidv4(), name: "Me", color: colors[0] }],
+  friends: [{ id: "itzyitzy", name: "Me", color: colors[0] }],
   items: [],
 
   addFriend: (name) =>
@@ -52,15 +52,19 @@ export const useStore = create<ReceiptStore>((set) => ({
     })),
 
   removeFriend: (id) =>
-    set((state) => ({
-      friends: state.friends.filter((f) => f.id !== id),
-      items: state.items.map((item) => ({
-        ...item,
-        assignedTo: item.isAllFriends
-          ? item.assignedTo
-          : item.assignedTo.filter((fid) => fid !== id),
-      })),
-    })),
+    set((state) => {
+      const updatedFriends = state.friends.filter((f) => f.id !== id);
+
+      return {
+        friends: updatedFriends,
+        items: state.items.map((item) => ({
+          ...item,
+          assignedTo: item.isAllFriends
+            ? updatedFriends.map((friend) => friend.id)
+            : item.assignedTo.filter((fid) => fid !== id),
+        })),
+      };
+    }),
 
   addItem: (newItem) =>
     set((state) => ({

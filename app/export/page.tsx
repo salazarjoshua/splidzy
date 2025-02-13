@@ -2,13 +2,12 @@
 import { FriendTagAvatar } from "@/components/friend-tag";
 import { Download } from "@/components/icons";
 import { Button, ButtonIcon } from "@/components/ui/button";
-import DashedUnderline from "@/components/ui/dashed-underline";
 import { useStore } from "@/store/useStore";
 import { toPng } from "html-to-image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
-import { FriendListEmpty } from "@/components/friends-list-dialog";
 import { ArrowLeft } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 
 const Export = () => {
   const { friends, items } = useStore();
@@ -70,7 +69,7 @@ const Export = () => {
     }
   };
 
-  const calculateFriendTotal = (friendId: number) => {
+  const calculateFriendTotal = (friendId: string) => {
     return items.reduce((total, item) => {
       if (item.assignedTo.length === 0) {
         return total + item.price / friends.length;
@@ -82,10 +81,9 @@ const Export = () => {
     }, 0);
   };
 
-  const total = items.reduce((sum, item) => {
-    const amount = item.price;
-    return sum + amount;
-  }, 0);
+  const countAssignedItems = (friendId: string) => {
+    return items.filter((item) => item.assignedTo.includes(friendId)).length;
+  };
 
   const handleCopyReceiptText = () => {
     if (!friends.length) return;
@@ -104,6 +102,9 @@ const Export = () => {
       .writeText(text)
       .then(() => {
         setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 2000);
       })
       .catch((error) => {
         console.error("Failed to copy text:", error);
@@ -125,54 +126,52 @@ const Export = () => {
         </Button>
       </div>
       <div
-        className="rounded-3xl border border-neutral-200 bg-white p-6"
+        className="flex flex-col gap-8 rounded-3xl border border-neutral-200 bg-white p-6 pb-10"
         ref={receiptRef}
       >
-        {!friends.length ? (
-          <FriendListEmpty />
-        ) : (
-          <div className="flex w-full flex-col gap-1">
-            {friends.map((friend) => (
+        <div className="mt-2 space-y-0.5 text-center">
+          <h1 className="text-3xl font-bold">splidzy</h1>
+          <p className="text-sm font-medium text-neutral-500">
+            split bills, stay besties ✌️
+          </p>
+        </div>
+        <div className="flex w-full flex-col gap-2.5">
+          {friends.map((friend) => (
+            <div key={friend.id}>
               <div
-                key={friend.id}
-                className="flex w-full items-center gap-2 rounded-xl bg-neutral-50 p-3 font-semibold md:gap-8"
+                className={
+                  "flex w-full items-center justify-between gap-4 rounded-xl"
+                }
               >
-                <div className="flex min-w-6 items-center gap-3">
+                <div className="flex items-center gap-1.5">
                   <FriendTagAvatar
-                    initial={friend.name}
+                    name={friend.name}
                     color={friend.color}
-                    selected={false}
+                    className="size-14"
                   />
-                  <span className="truncate font-medium">{friend.name}</span>
-                </div>
-                <div className="min-w-6 flex-1">
-                  <DashedUnderline />
+                  <div>
+                    <h2 className="font-semibold">{friend.name}</h2>
+                    <p className="text-sm text-neutral-500">
+                      {countAssignedItems(friend.id)} item
+                      {countAssignedItems(friend.id) > 1 && "s"}
+                    </p>
+                  </div>
                 </div>
                 <div>
-                  <span className="font-medium">
-                    {calculateFriendTotal(friend.id).toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                  <span className="text-lg font-semibold">
+                    {formatCurrency(calculateFriendTotal(friend.id))}
                   </span>
                 </div>
               </div>
-            ))}
-
-            <div className="flex items-center justify-between gap-8 px-3 pt-6 font-bold">
-              <span>Total</span>
-              <div className="flex-1">
-                <DashedUnderline />
-              </div>
-              <span>
-                {total.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </span>
             </div>
-          </div>
-        )}
+          ))}
+        </div>
+
+        <div className="text-center">
+          <p className="text-sm font-medium text-neutral-500">
+            see you next split! 🫶
+          </p>
+        </div>
       </div>
       <div className="flex items-center justify-between gap-2">
         <Button
@@ -180,11 +179,9 @@ const Export = () => {
           variant={"outline"}
           className="relative overflow-hidden"
           disabled={friends.length === 0}
-          onMouseLeave={() => setTimeout(() => setIsCopied(false), 1500)}
-          onBlur={() => setTimeout(() => setIsCopied(false), 1500)}
         >
           <span
-            className={`${isCopied ? "-translate-y-[150%]" : ""} transition-all`}
+            className={`${isCopied ? "-translate-y-[150%]" : "translate-y-0"} transition-all`}
           >
             Copy as text
           </span>

@@ -7,30 +7,19 @@ import { EditItemDialog } from "@/components/edit-item-dialog";
 import { useStore } from "@/store/useStore";
 import type { Item } from "@/types";
 import React from "react";
-import { FriendsListDialog } from "@/components/friends-list-dialog";
 import DashedUnderline from "./ui/dashed-underline";
 import Link from "next/link";
 import { AddItems } from "./add-items";
+import { formatCurrency } from "@/lib/utils";
 
 export function Receipt() {
   const { friends, items, editItem } = useStore();
-  const [selectedFriend, setSelectedFriend] = useState("all");
   const [editingItem, setEditingItem] = useState<Item | null>(null);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
 
-  const currentItems =
-    selectedFriend === "all"
-      ? items
-      : items.filter(
-          (item) =>
-            item.isAllFriends || item.assignedTo.includes(selectedFriend),
-        );
+  const currentItems = items;
 
   const total = currentItems.reduce((sum, item) => {
-    const amount =
-      selectedFriend === "all"
-        ? item.price
-        : item.price / (item.assignedTo.length || friends.length);
+    const amount = item.price;
     return sum + amount;
   }, 0);
 
@@ -80,56 +69,39 @@ export function Receipt() {
   return (
     <>
       <div className="flex w-full flex-col rounded-3xl border border-neutral-200 bg-white p-4">
-        <>
-          {currentItems.map((item, index) => (
-            <div key={item.id}>
-              <Button
-                onClick={() => setEditingItem(item)}
-                variant="secondary"
-                className="relative h-auto w-full rounded-2xl bg-transparent p-4"
-              >
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center justify-between gap-2 md:gap-8">
-                    <h3 className="truncate">{item.name}</h3>
-                    <div className="shrink-0">
-                      {(selectedFriend === "all"
-                        ? item.price
-                        : item.price /
-                          (item.assignedTo.length || friends.length)
-                      ).toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
-                    <div className="text-sm">
-                      {renderAssignedFriends(
-                        item.isAllFriends,
-                        item.assignedTo,
-                      )}
-                    </div>
-                    <div className="text-sm">
-                      {(item.price / item.assignedTo.length).toLocaleString(
-                        "en-US",
-                        {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        },
-                      )}{" "}
-                      each
-                    </div>
+        {currentItems.map((item, index) => (
+          <div key={item.id}>
+            <Button
+              onClick={() => setEditingItem(item)}
+              variant="secondary"
+              className="relative h-auto w-full rounded-2xl bg-transparent p-4"
+            >
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center justify-between gap-2 md:gap-8">
+                  <h3 className="truncate">{item.name}</h3>
+                  <div className="shrink-0">
+                    {formatCurrency(
+                      item.price / (item.assignedTo.length || friends.length),
+                    )}
                   </div>
                 </div>
-              </Button>
-              {index !== currentItems.length - 1 && (
-                <div className="px-4 text-neutral-100">
-                  <DashedUnderline />
+                <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
+                  <div className="text-sm">
+                    {renderAssignedFriends(item.isAllFriends, item.assignedTo)}
+                  </div>
+                  <div className="text-sm">
+                    {formatCurrency(item.price / item.assignedTo.length)} each
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
-        </>
+              </div>
+            </Button>
+            {index !== currentItems.length - 1 && (
+              <div className="px-4 text-neutral-100">
+                <DashedUnderline />
+              </div>
+            )}
+          </div>
+        ))}
 
         <div className={`${currentItems.length !== 0 && "mt-4"}`}>
           <AddItems />
@@ -146,15 +118,6 @@ export function Receipt() {
         item={editingItem}
         friends={friends}
         onItemChange={editItem}
-      />
-      <FriendsListDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSelect={(friendId) => {
-          setSelectedFriend(friendId);
-          setDialogOpen(false);
-        }}
-        selectedFriend={selectedFriend}
       />
     </>
   );
