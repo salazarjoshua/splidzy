@@ -54,23 +54,28 @@ export function AddItems() {
         ? prev.assignedTo.filter((id) => id !== friendId)
         : [...prev.assignedTo, friendId];
 
-      setSelectAll(updatedAssignedTo.length === friends.length);
+      // If user manually unselects a friend, turn off `isAllFriends`
+      const isManuallyDeselecting = updatedAssignedTo.length !== friends.length;
 
       return {
         ...prev,
         assignedTo: updatedAssignedTo,
-        isAllFriends: updatedAssignedTo.length === friends.length,
+        isAllFriends: isManuallyDeselecting ? false : prev.isAllFriends,
       };
     });
+
+    setSelectAll(
+      (prev) => prev && friends.length === newItem.assignedTo.length + 1,
+    );
   };
 
   const handleSelectAllToggle = (checked: boolean) => {
     setSelectAll(checked);
-    setNewItem({
-      ...newItem,
+    setNewItem((prev) => ({
+      ...prev,
       assignedTo: checked ? friends.map((friend) => friend.id) : [],
-      isAllFriends: checked,
-    });
+      isAllFriends: checked, // Only enable isAllFriends when toggling ON
+    }));
   };
 
   const handleOpenChange = useCallback((open: boolean) => {
@@ -80,7 +85,7 @@ export function AddItems() {
   return (
     <>
       <Button
-        className="flex h-auto w-full items-center justify-center gap-1.5 border-2 border-dashed bg-transparent px-1.5 py-3 font-semibold text-neutral-500 hover:bg-neutral-100"
+        className="flex h-auto w-full items-center justify-center gap-1.5 border-2 border-dashed bg-neutral-100 px-1.5 py-3 font-semibold text-neutral-500 hover:text-neutral-900"
         variant="secondary"
         onClick={() => setIsOpen(true)}
       >
@@ -120,18 +125,15 @@ export function AddItems() {
 
           <div className="flex items-center justify-between gap-16 space-y-0.5 text-sm">
             <div className="space-y-0.5 text-sm">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold">Assign to</h3>
-                <Switch
-                  checked={selectAll}
-                  onCheckedChange={handleSelectAllToggle}
-                />
-              </div>
+              <h3 className="font-semibold">Assign to all</h3>
               <p className="text-gray-500">
-                New friends will be assigned automatically if you include
-                everyone.
+                New friends will be assigned automatically.
               </p>
             </div>
+            <Switch
+              checked={selectAll}
+              onCheckedChange={handleSelectAllToggle}
+            />
           </div>
 
           <div className="no-scrollbar -mx-6 -mb-2 -mt-4 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2">

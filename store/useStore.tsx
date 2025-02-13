@@ -1,19 +1,6 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
-
-interface Friend {
-  id: string;
-  name: string;
-  color: "yellow" | "lime" | "lavender" | "sky" | "peach" | "rose";
-}
-
-interface Item {
-  id: string;
-  name: string;
-  price: number;
-  assignedTo: string[];
-  isAllFriends: boolean;
-}
+import { Friend, Item } from "@/types";
 
 interface ReceiptStore {
   friends: Friend[];

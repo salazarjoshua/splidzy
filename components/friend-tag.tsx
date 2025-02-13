@@ -69,6 +69,7 @@ export const FriendTag = React.forwardRef<HTMLButtonElement, FriendTagProps>(
           selected={selected}
           variant={friendTagVariant}
         />
+        <span className="w-full truncate text-sm">{name}</span>
       </Button>
     );
   },
@@ -88,16 +89,16 @@ export function FriendTagAvatar({
     <>
       <div
         className={cn(
-          "relative size-16 shrink-0 rounded-full border-2 border-transparent p-0.5",
+          "relative size-16 shrink-0 rounded-full border-2 border-transparent p-0.5 text-lg font-bold",
           variant === "select" && "border-neutral-100",
           selected && "border-green-500 text-green-100",
+          className,
         )}
       >
         <div
           className={cn(
-            "flex size-full items-center justify-center rounded-full text-lg font-bold transition-colors",
+            "flex size-full items-center justify-center rounded-full transition-colors",
             colorStyles[color],
-            className,
           )}
           {...props}
         >
@@ -121,7 +122,6 @@ export function FriendTagAvatar({
           </div>
         )}
       </div>
-      <span className="w-full truncate text-sm">{name}</span>
     </>
   );
 }

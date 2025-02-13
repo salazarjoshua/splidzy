@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Stars, Download, ReceiptLong } from "./icons";
-import { X } from "lucide-react";
+import { Download } from "./icons";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { FriendTagAvatar } from "./friend-tag";
 import { EditItemDialog } from "@/components/edit-item-dialog";
@@ -29,21 +28,25 @@ export function Receipt() {
             item.assignedTo.includes(selectedFriend),
         );
 
-  const total = currentItems.reduce((sum, item) => {
-    const amount =
-      selectedFriend === "all"
-        ? item.price
-        : item.price / (item.assignedTo.length || friends.length);
-    return sum + amount;
-  }, 0);
+  // const total = currentItems.reduce((sum, item) => {
+  //   const amount =
+  //     selectedFriend === "all"
+  //       ? item.price
+  //       : item.price / (item.assignedTo.length || friends.length);
+  //   return sum + amount;
+  // }, 0);
 
-  const renderAssignedFriends = (assignedTo: string[]) => {
-    if (assignedTo.length === 0) {
+  const renderAssignedFriends = (
+    isAllFriends: boolean,
+    assignedTo: string[],
+  ) => {
+    if (isAllFriends) {
       return (
         <div className="flex items-center gap-1 text-neutral-600">
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-white bg-yellow-100 text-sm">
-            <Stars className="size-3 text-yellow-400" />
-          </div>
+          <FriendTagAvatar
+            name={"everyone"}
+            className="size-7 border-2 border-white p-0 text-sm"
+          />
           <span>Everyone</span>
         </div>
       );
@@ -60,12 +63,13 @@ export function Receipt() {
             <FriendTagAvatar
               key={friend.id}
               name={friend.name}
-              className="border-2 border-white"
+              color={friend.color}
+              className="size-7 border-2 border-white p-0 text-xs"
             />
           ))}
         </div>
         {remainingCount > 0 && (
-          <span className="ml-1 text-sm text-neutral-600">
+          <span className="ml-1 text-sm">
             +{remainingCount} friend{remainingCount > 1 ? "s" : ""}
           </span>
         )}
@@ -73,78 +77,22 @@ export function Receipt() {
     );
   };
 
-  const selectedFriendData = friends.find(
-    (f) => f.id.toString() === selectedFriend,
-  );
-
   return (
     <>
-      <div className="w-full rounded-3xl border border-neutral-200 bg-white p-6">
-        <AddItems />
-        {currentItems.length > 0 && (
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-center text-2xl font-bold">Receipt</h2>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="outline"
-                size="withIcon"
-                onClick={() => setDialogOpen(true)}
-              >
-                {selectedFriend === "all" ? (
-                  <>
-                    <div className="flex size-5 items-center justify-center rounded-full bg-yellow-100 text-white">
-                      <Stars className="size-4 text-yellow-400" />
-                    </div>
-                    <span className="max-w-[24ch] truncate">
-                      Choose a Friend
-                    </span>
-                  </>
-                ) : selectedFriendData ? (
-                  <>
-                    <div className="flex size-5 items-center justify-center rounded-full bg-yellow-50 text-white">
-                      <FriendTagAvatar
-                        name={selectedFriendData.name}
-                        color={selectedFriendData.color}
-                        className="h-6 w-6"
-                      />
-                    </div>
-                    <span className="max-w-[24ch] truncate">
-                      {selectedFriendData.name}
-                    </span>
-                  </>
-                ) : null}
-              </Button>
-              {selectedFriend !== "all" && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setSelectedFriend("all")}
-                  className="text-red-500 hover:text-red-500"
-                >
-                  <X size={12} strokeWidth={3} />
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
-
+      <div className="flex w-full flex-col rounded-3xl border border-neutral-200 bg-white p-4">
         {currentItems.length !== 0 && (
           <>
-            <div className="space-y-1">
-              {currentItems.map((item) => (
+            {currentItems.map((item, index) => (
+              <div key={item.id}>
                 <Button
                   onClick={() => setEditingItem(item)}
-                  key={item.id}
                   variant="secondary"
-                  className="relative h-auto w-full p-4"
+                  className="relative h-auto w-full rounded-2xl bg-transparent p-4"
                 >
                   <div className="flex-1 space-y-1">
-                    <div className="flex items-center gap-2 md:gap-8">
-                      <h3 className="max-w-[32ch] truncate">{item.name}</h3>
-                      <div className="min-w-6 flex-1">
-                        <DashedUnderline />
-                      </div>
-                      <span>
+                    <div className="flex items-center justify-between gap-2 md:gap-8">
+                      <h3 className="truncate">{item.name}</h3>
+                      <div className="shrink-0">
                         {(selectedFriend === "all"
                           ? item.price
                           : item.price /
@@ -153,34 +101,40 @@ export function Receipt() {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })}
-                      </span>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between gap-8">
+                    <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
                       <div className="text-sm">
-                        {renderAssignedFriends(item.assignedTo)}
+                        {renderAssignedFriends(
+                          item.isAllFriends,
+                          item.assignedTo,
+                        )}
+                      </div>
+                      <div className="text-sm">
+                        {(item.price / item.assignedTo.length).toLocaleString(
+                          "en-US",
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          },
+                        )}{" "}
+                        each
                       </div>
                     </div>
                   </div>
                 </Button>
-              ))}
-
-              <div className="px-4 pt-6">
-                <div className="flex items-center justify-between gap-8 font-bold">
-                  <span>Total</span>
-                  <div className="flex-1">
+                {index !== currentItems.length - 1 && (
+                  <div className="px-4 text-neutral-100">
                     <DashedUnderline />
                   </div>
-                  <span>
-                    {total.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </span>
-                </div>
+                )}
               </div>
-            </div>
+            ))}
           </>
         )}
+        <div className="mt-4">
+          <AddItems />
+        </div>
       </div>
 
       <Button asChild className="relative w-full">
@@ -188,7 +142,7 @@ export function Receipt() {
           <ButtonIcon>
             <Download />
           </ButtonIcon>
-          See summary
+          Split Bills
         </Link>
       </Button>
 

@@ -17,19 +17,7 @@ import { FriendTag } from "./friend-tag";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useStore } from "@/store/useStore";
 import { Check, Trash } from "./icons";
-
-interface Friend {
-  id: number;
-  name: string;
-  color: "green" | "pink" | "purple" | "blue";
-}
-
-interface Item {
-  id: number;
-  name: string;
-  price: number;
-  assignedTo: number[];
-}
+import { Item, Friend } from "@/types";
 
 interface EditItemDialogProps {
   open: boolean;
