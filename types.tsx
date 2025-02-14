@@ -1,14 +1,15 @@
 interface Friend {
-  id: number;
+  id: string;
   name: string;
-  color: "green" | "pink" | "purple" | "blue";
+  color: "yellow" | "lime" | "lavender" | "sky" | "peach" | "rose";
 }
 
 interface Item {
-  id: number;
+  id: string;
   name: string;
   price: number;
-  assignedTo: number[];
+  assignedTo: string[];
+  isAllFriends: boolean;
 }
 
 export type { Friend, Item };

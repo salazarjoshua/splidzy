@@ -42,3 +42,12 @@ input[type="number"] {
 [data-vaul-drawer][data-vaul-drawer-direction="bottom"]::after {
   height: 0 !important;
 }
+
+/* utils */
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

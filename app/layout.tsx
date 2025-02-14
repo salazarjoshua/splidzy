@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Footer from "@/components/footer";
 
 const sfProRounded = localFont({
   src: [
@@ -25,22 +26,22 @@ const sfProRounded = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://paymixx.vercel.app/"),
+  metadataBase: new URL("https://splidzy.vercel.app/"),
   alternates: {
     canonical: "/",
   },
   title: {
-    default: "PayMixx - Split Bills, Not Brain Cells 💀",
-    template: "%s - Paymixx",
+    default: "splidzy - split bills, stay besties",
+    template: "%s - Splidzy",
   },
   description:
-    "Math? After a long night? No thanks. PayMixx handles the numbers while you rest up. Just tap, split, and vibes.",
+    "Splidzy is the coolest way to split bills. Add besties, add bills, and let the good vibes roll!",
   openGraph: {
-    title: "PayMixx - Split Bills, Not Brain Cells 💀",
+    title: "splidzy - split bills, stay besties",
     description:
-      "Math? After a long night? No thanks. PayMixx handles the numbers while you rest up. Just tap, split, and vibes.",
-    url: "https://paymixx.vercel.app/",
-    siteName: "PayMixx - Split Bills, Not Brain Cells 💀",
+      "Splidzy is the coolest way to split bills. Add besties, add bills, and let the good vibes roll!",
+    url: "https://splidzy.vercel.app/",
+    siteName: "splidzy - split bills, stay besties",
     locale: "en_US",
     type: "website",
     images: [
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "PayMixx - Split Bills, Not Brain Cells 💀",
+    title: "splidzy - split bills, stay besties",
     card: "summary_large_image",
   },
 };
@@ -76,7 +77,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfProRounded.variable} font-sans antialiased`}>
-        <div className="min-h-screen px-4 py-12">{children}</div>
+        <div className="relative z-[1] mb-48 px-4 pt-12">{children}</div>
+        <Footer />
       </body>
     </html>
   );
