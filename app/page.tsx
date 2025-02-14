@@ -1,14 +1,14 @@
 "use client";
 import { ManageFriends } from "@/components/manage-friends";
-import { Receipt } from "@/components/receipt";
+import { ManageItems } from "@/components/manage-items";
 import About from "@/components/about";
 
-export default function ReceiptSplitter() {
+export default function Splidzy() {
   return (
     <>
       <main className="mx-auto flex max-w-md flex-col justify-center gap-4">
         <ManageFriends />
-        <Receipt />
+        <ManageItems />
       </main>
       <About />
     </>

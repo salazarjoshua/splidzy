@@ -12,7 +12,7 @@ import Link from "next/link";
 import { AddItems } from "./add-items";
 import { formatCurrency } from "@/lib/utils";
 
-export function Receipt() {
+export function ManageItems() {
   const { friends, items, editItem } = useStore();
   const [editingItem, setEditingItem] = useState<Item | null>(null);
 
