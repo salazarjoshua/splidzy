@@ -79,11 +79,7 @@ export function ManageItems() {
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between gap-2 md:gap-8">
                   <h3 className="truncate">{item.name}</h3>
-                  <div className="shrink-0">
-                    {formatCurrency(
-                      item.price / (item.assignedTo.length || friends.length),
-                    )}
-                  </div>
+                  <div className="shrink-0">{formatCurrency(item.price)}</div>
                 </div>
                 <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
                   <div className="text-sm">

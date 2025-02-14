@@ -1,7 +1,6 @@
 "use client";
 import { ManageFriends } from "@/components/manage-friends";
 import { ManageItems } from "@/components/manage-items";
-import About from "@/components/about";
 
 export default function Splidzy() {
   return (
@@ -10,7 +9,6 @@ export default function Splidzy() {
         <ManageFriends />
         <ManageItems />
       </main>
-      <About />
     </>
   );
 }

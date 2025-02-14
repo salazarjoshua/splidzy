@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Footer from "@/components/footer";
 
 const sfProRounded = localFont({
   src: [
@@ -30,17 +31,17 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   title: {
-    default: "splidzy - split bills, stay besties ✌️",
+    default: "splidzy - split bills, stay besties",
     template: "%s - Splidzy",
   },
   description:
     "Splidzy is the coolest way to split bills. Add besties, add bills, and let the good vibes roll!",
   openGraph: {
-    title: "splidzy - split bills, stay besties ✌️",
+    title: "splidzy - split bills, stay besties",
     description:
       "Splidzy is the coolest way to split bills. Add besties, add bills, and let the good vibes roll!",
     url: "https://splidzy.vercel.app/",
-    siteName: "splidzy - split bills, stay besties ✌️",
+    siteName: "splidzy - split bills, stay besties",
     locale: "en_US",
     type: "website",
     images: [
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "splidzy - split bills, stay besties ✌️",
+    title: "splidzy - split bills, stay besties",
     card: "summary_large_image",
   },
 };
@@ -76,7 +77,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfProRounded.variable} font-sans antialiased`}>
-        <div className="min-h-screen px-4 py-12">{children}</div>
+        <div className="relative z-[1] mb-48 px-4 pt-12">{children}</div>
+        <Footer />
       </body>
     </html>
   );

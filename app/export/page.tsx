@@ -132,7 +132,7 @@ const Export = () => {
         <div className="mt-2 space-y-0.5 text-center">
           <h1 className="text-3xl font-bold">splidzy</h1>
           <p className="text-sm font-medium text-neutral-500">
-            split bills, stay besties ✌️
+            split bills, stay besties
           </p>
         </div>
         <div className="flex w-full flex-col gap-2.5">
@@ -169,7 +169,7 @@ const Export = () => {
 
         <div className="text-center">
           <p className="text-sm font-medium text-neutral-500">
-            see you next split! 🫶
+            see you next split! ✌️
           </p>
         </div>
       </div>
