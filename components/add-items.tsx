@@ -84,7 +84,7 @@ export function AddItems() {
   return (
     <>
       <Button
-        className="flex h-auto w-full items-center justify-center gap-1.5 border-2 border-dashed bg-neutral-100 px-1.5 py-3 font-semibold text-neutral-500 hover:text-neutral-900"
+        className="flex h-auto w-full items-center justify-center gap-1.5 border-2 border-dashed px-1.5 py-3 font-semibold text-neutral-500 hover:text-neutral-900"
         variant="secondary"
         onClick={() => setIsOpen(true)}
       >

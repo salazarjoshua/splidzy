@@ -92,30 +92,25 @@ const AddFriends = () => {
               className="flex-grow"
               maxLength={24}
             />
-            <Button
-              type="submit"
-              className="sr-only bg-green-50 text-green-500"
-            >
+            <Button type="submit" variant={"secondary"}>
               Add
             </Button>
           </form>
 
-          {localFriends.length > 0 && (
-            <div
-              ref={friendsListRef}
-              className="no-scrollbar -mx-6 -my-2 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2"
-            >
-              {localFriends.map((friend) => (
-                <FriendTag
-                  key={friend.id}
-                  name={friend.name}
-                  color={friend.color}
-                  onClick={() => removeLocalFriend(friend.id)}
-                  friendTagVariant="delete"
-                />
-              ))}
-            </div>
-          )}
+          <div
+            ref={friendsListRef}
+            className="no-scrollbar -mx-6 -my-2 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2"
+          >
+            {localFriends.map((friend) => (
+              <FriendTag
+                key={friend.id}
+                name={friend.name}
+                color={friend.color}
+                onClick={() => removeLocalFriend(friend.id)}
+                friendTagVariant="delete"
+              />
+            ))}
+          </div>
 
           <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-6">
             <div className="text-sm font-medium text-neutral-400">
