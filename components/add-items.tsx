@@ -122,11 +122,11 @@ export function AddItems() {
             />
           </div>
 
-          <div className="flex items-center justify-between gap-2 space-y-0.5 text-sm">
+          <div className="flex items-center justify-between gap-4 space-y-0.5 text-sm">
             <div className="space-y-0.5 text-sm">
-              <h3 className="font-semibold">Assign to all</h3>
+              <h3 className="font-semibold">Split by all</h3>
               <p className="text-gray-500">
-                New friends will be assigned automatically.
+                New friends will be added to the split automatically.
               </p>
             </div>
             <Switch
