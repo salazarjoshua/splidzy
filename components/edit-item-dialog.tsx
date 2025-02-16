@@ -7,7 +7,13 @@ import { Check, Trash } from "./icons";
 import { Item, Friend } from "@/types";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import { Switch } from "./ui/switch";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import {
+  checkValidInput,
+  validateFriends,
+  validatePrice,
+} from "@/lib/validate-inputs";
+import { cn } from "@/lib/utils";
 
 interface EditItemDialogProps {
   open: boolean;
@@ -25,17 +31,24 @@ export function EditItemDialog({
   onItemChange,
 }: EditItemDialogProps) {
   const { removeItem } = useStore();
-  const [localItem, setLocalItem] = React.useState<Item | null>(null);
-  const [selectAll, setSelectAll] = React.useState(true);
+  const [localItem, setLocalItem] = useState<Item | null>(null);
+  const [selectAll, setSelectAll] = useState(true);
+  const [nameIsError, setNameIsError] = useState(false);
+  const [priceIsError, setPriceIsError] = useState(false);
+  const [friendsIsError, setFriendsIsError] = useState(false);
 
   useEffect(() => {
     if (open && item) {
       setLocalItem(item);
       setSelectAll(item.isAllFriends);
+      setFriendsIsError(false);
     }
   }, [item, open]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNameIsError(false);
+    setPriceIsError(false);
+
     if (localItem) {
       setLocalItem({
         ...localItem,
@@ -69,6 +82,8 @@ export function EditItemDialog({
     setSelectAll(
       (prev) => prev && friends.length === localItem?.assignedTo.length + 1,
     );
+
+    setFriendsIsError(false);
   };
 
   const handleSelectAllToggle = (checked: boolean) => {
@@ -84,10 +99,20 @@ export function EditItemDialog({
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (localItem) {
-      onItemChange(localItem);
-      onOpenChange(false);
-    }
+
+    if (!localItem) return;
+
+    const isNameValid = checkValidInput(localItem.name, setNameIsError);
+    const isPriceValid = validatePrice(localItem.price, setPriceIsError);
+    const isFriendsValid = validateFriends(
+      localItem.assignedTo,
+      setFriendsIsError,
+    );
+
+    if (!isNameValid || !isPriceValid || !isFriendsValid) return;
+
+    onItemChange(localItem);
+    onOpenChange(false);
   };
 
   return (
@@ -105,6 +130,7 @@ export function EditItemDialog({
             onChange={handleInputChange}
             placeholder="Enter item"
             maxLength={40}
+            isError={nameIsError}
           />
           <Input
             id="price"
@@ -116,6 +142,7 @@ export function EditItemDialog({
             placeholder="Price"
             min={1}
             max={1_000_000}
+            isError={priceIsError}
           />
         </div>
 
@@ -129,18 +156,31 @@ export function EditItemDialog({
           <Switch checked={selectAll} onCheckedChange={handleSelectAllToggle} />
         </div>
 
-        <div className="no-scrollbar -mx-6 -mb-2 -mt-4 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2">
-          {friends.map((friend) => (
-            <FriendTag
-              type="button"
-              key={friend.id}
-              onClick={() => toggleFriendAssignment(friend.id)}
-              name={friend.name}
-              color={friend.color}
-              selected={localItem?.assignedTo.includes(friend.id)}
-              friendTagVariant="select"
-            />
-          ))}
+        <div
+          className={cn(
+            "-mx-6 -mb-2 -mt-4 overflow-x-hidden transition-colors",
+            friendsIsError && "bg-red-50/75",
+          )}
+        >
+          <div
+            className={cn(
+              "no-scrollbar flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2",
+              friendsIsError && "animate-shake",
+            )}
+          >
+            {friends.map((friend) => (
+              <FriendTag
+                type="button"
+                key={friend.id}
+                onClick={() => toggleFriendAssignment(friend.id)}
+                name={friend.name}
+                color={friend.color}
+                selected={localItem?.assignedTo.includes(friend.id)}
+                friendTagVariant="select"
+                className="bg-transparent"
+              />
+            ))}
+          </div>
         </div>
 
         <div className="flex justify-end gap-2 border-t border-neutral-200 pt-6">

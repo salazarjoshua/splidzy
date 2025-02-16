@@ -8,6 +8,7 @@ import { Friend } from "@/types";
 import { FriendTag } from "./friend-tag";
 import { v4 as uuidv4 } from "uuid";
 import { Check } from "./icons";
+import { checkValidInput } from "@/lib/validate-inputs";
 
 const AddFriends = () => {
   const { friends, addFriend } = useStore();
@@ -15,28 +16,30 @@ const AddFriends = () => {
   const [localFriends, setLocalFriends] = useState<Friend[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const friendsListRef = useRef<HTMLDivElement>(null);
+  const [isError, setIsError] = useState(false);
 
   const addLocalFriend = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      if (newFriend.trim()) {
-        const newFriendObj: Friend = {
-          id: uuidv4(),
-          name: newFriend,
-          color: colors[(friends.length + localFriends.length) % colors.length],
-        };
-        setLocalFriends((prev) => [...prev, newFriendObj]);
-        setNewFriend("");
 
-        setTimeout(() => {
-          if (friendsListRef.current) {
-            friendsListRef.current.scrollTo({
-              left: friendsListRef.current.scrollWidth,
-              behavior: "smooth",
-            });
-          }
-        }, 50);
-      }
+      if (!checkValidInput(newFriend, setIsError)) return;
+
+      const newFriendObj: Friend = {
+        id: uuidv4(),
+        name: newFriend,
+        color: colors[(friends.length + localFriends.length) % colors.length],
+      };
+      setLocalFriends((prev) => [...prev, newFriendObj]);
+      setNewFriend("");
+
+      setTimeout(() => {
+        if (friendsListRef.current) {
+          friendsListRef.current.scrollTo({
+            left: friendsListRef.current.scrollWidth,
+            behavior: "smooth",
+          });
+        }
+      }, 50);
     },
     [newFriend, friends.length, localFriends.length],
   );
@@ -87,10 +90,14 @@ const AddFriends = () => {
             <Input
               id="friend"
               value={newFriend}
-              onChange={(e) => setNewFriend(e.target.value)}
+              onChange={(e) => {
+                setNewFriend(e.target.value);
+                setIsError(false);
+              }}
               placeholder="Enter a friend's name"
               className="flex-grow"
               maxLength={24}
+              isError={isError}
             />
             <Button type="submit" variant={"secondary"}>
               Add
