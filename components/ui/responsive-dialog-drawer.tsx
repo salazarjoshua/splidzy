@@ -27,7 +27,7 @@ export function ResponsiveDialogDrawer({
       </DialogContent>
     </Dialog>
   ) : (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={onOpenChange} repositionInputs={false}>
       <DrawerContent aria-describedby={undefined}>
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
