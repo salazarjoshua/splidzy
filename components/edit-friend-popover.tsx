@@ -12,6 +12,8 @@ import {
 import { useStore } from "@/store/useStore";
 import type { Friend } from "@/types";
 import { FriendTag } from "./friend-tag";
+import { useState } from "react";
+import { checkValidInput } from "@/lib/validate-inputs";
 
 interface EditFriendPopoverProps {
   friend: Friend;
@@ -21,9 +23,13 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
   const { removeFriend, editFriend } = useStore();
   const [isOpen, setIsOpen] = React.useState(false);
   const [name, setName] = React.useState(friend.name);
+  const [isError, setIsError] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!checkValidInput(name, setIsError)) return;
+
     if (name.trim() && name !== friend.name) {
       editFriend(friend.id, name.trim());
     }
@@ -31,7 +37,15 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
   };
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <Popover
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open && name === friend.name) {
+          setName(friend.name);
+        }
+        setIsOpen(open);
+      }}
+    >
       <PopoverTrigger asChild>
         <FriendTag name={friend.name} color={friend.color} />
       </PopoverTrigger>
@@ -44,7 +58,11 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
             <Input
               id="friend"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                setIsError(false);
+              }}
+              isError={isError}
               placeholder="Enter a friend's name"
               maxLength={24}
             />

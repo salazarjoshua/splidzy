@@ -11,6 +11,7 @@ import DashedUnderline from "./ui/dashed-underline";
 import Link from "next/link";
 import { AddItems } from "./add-items";
 import { formatCurrency } from "@/lib/utils";
+import Image from "next/image";
 
 export function ManageItems() {
   const { friends, items, editItem } = useStore();
@@ -30,11 +31,8 @@ export function ManageItems() {
     if (isAllFriends) {
       return (
         <div className="flex items-center gap-1 text-neutral-600">
-          <FriendTagAvatar
-            name={"everyone"}
-            className="size-7 border-2 border-white p-0 text-sm"
-          />
-          <span>Everyone</span>
+          <Image src="/bff.webp" width={28} height={28} alt="" />
+          <span>{`Everyone's in! `}</span>
         </div>
       );
     }
@@ -58,9 +56,7 @@ export function ManageItems() {
           ))}
         </div>
         {remainingCount > 0 && (
-          <span className="ml-1 text-sm">
-            +{remainingCount} friend{remainingCount > 1 ? "s" : ""}
-          </span>
+          <span className="text-sm">+{remainingCount} more</span>
         )}
       </div>
     );

@@ -8,6 +8,7 @@ import { Friend } from "@/types";
 import { FriendTag } from "./friend-tag";
 import { v4 as uuidv4 } from "uuid";
 import { Check } from "./icons";
+import { checkValidInput } from "@/lib/validate-inputs";
 
 const AddFriends = () => {
   const { friends, addFriend } = useStore();
@@ -15,28 +16,30 @@ const AddFriends = () => {
   const [localFriends, setLocalFriends] = useState<Friend[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const friendsListRef = useRef<HTMLDivElement>(null);
+  const [isError, setIsError] = useState(false);
 
   const addLocalFriend = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      if (newFriend.trim()) {
-        const newFriendObj: Friend = {
-          id: uuidv4(),
-          name: newFriend,
-          color: colors[(friends.length + localFriends.length) % colors.length],
-        };
-        setLocalFriends((prev) => [...prev, newFriendObj]);
-        setNewFriend("");
 
-        setTimeout(() => {
-          if (friendsListRef.current) {
-            friendsListRef.current.scrollTo({
-              left: friendsListRef.current.scrollWidth,
-              behavior: "smooth",
-            });
-          }
-        }, 50);
-      }
+      if (!checkValidInput(newFriend, setIsError)) return;
+
+      const newFriendObj: Friend = {
+        id: uuidv4(),
+        name: newFriend,
+        color: colors[(friends.length + localFriends.length) % colors.length],
+      };
+      setLocalFriends((prev) => [...prev, newFriendObj]);
+      setNewFriend("");
+
+      setTimeout(() => {
+        if (friendsListRef.current) {
+          friendsListRef.current.scrollTo({
+            left: friendsListRef.current.scrollWidth,
+            behavior: "smooth",
+          });
+        }
+      }, 50);
     },
     [newFriend, friends.length, localFriends.length],
   );
@@ -87,35 +90,34 @@ const AddFriends = () => {
             <Input
               id="friend"
               value={newFriend}
-              onChange={(e) => setNewFriend(e.target.value)}
+              onChange={(e) => {
+                setNewFriend(e.target.value);
+                setIsError(false);
+              }}
               placeholder="Enter a friend's name"
               className="flex-grow"
               maxLength={24}
+              isError={isError}
             />
-            <Button
-              type="submit"
-              className="sr-only bg-green-50 text-green-500"
-            >
+            <Button type="submit" variant={"secondary"}>
               Add
             </Button>
           </form>
 
-          {localFriends.length > 0 && (
-            <div
-              ref={friendsListRef}
-              className="no-scrollbar -mx-6 -my-2 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2"
-            >
-              {localFriends.map((friend) => (
-                <FriendTag
-                  key={friend.id}
-                  name={friend.name}
-                  color={friend.color}
-                  onClick={() => removeLocalFriend(friend.id)}
-                  friendTagVariant="delete"
-                />
-              ))}
-            </div>
-          )}
+          <div
+            ref={friendsListRef}
+            className="no-scrollbar -mx-6 -my-2 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2"
+          >
+            {localFriends.map((friend) => (
+              <FriendTag
+                key={friend.id}
+                name={friend.name}
+                color={friend.color}
+                onClick={() => removeLocalFriend(friend.id)}
+                friendTagVariant="delete"
+              />
+            ))}
+          </div>
 
           <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-6">
             <div className="text-sm font-medium text-neutral-400">

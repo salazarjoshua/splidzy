@@ -20,6 +20,28 @@ const config: Config = {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			animation: {
+				'shake': 'shake 0.5s linear',
+			},
+			keyframes: {
+				'shake': {
+					'41%, 8%': {
+						transform: 'translate3d(-6px, 0, 0)'
+					},
+					'25%, 58%': {
+						transform: 'translate3d(6px, 0, 0)'
+					},
+					'75%': {
+						transform: 'translate3d(-3px, 0, 0)'
+					},
+					'92%': {
+						transform: 'translate3d(3px, 0, 0)'
+					},
+					'0%': {
+						transform: 'translate3d(0, 0, 0)'
+					}
+				}
 			}
 		}
 	},
