@@ -145,6 +145,7 @@ export function AddItems() {
               name="price"
               type="number"
               step="0.01"
+              inputMode="numeric"
               value={newItem.price ?? ""}
               onChange={(e) => {
                 const value = e.target.valueAsNumber;

@@ -137,6 +137,7 @@ export function EditItemDialog({
             name="price"
             type="number"
             step="0.01"
+            inputMode="numeric"
             value={localItem?.price || ""}
             onChange={handleInputChange}
             placeholder="Price"
