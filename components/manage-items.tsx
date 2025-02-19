@@ -12,6 +12,7 @@ import Link from "next/link";
 import { AddItems } from "./add-items";
 import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
+import StickyActionBar from "./sticky-action-bar";
 
 export function ManageItems() {
   const { friends, items, editItem } = useStore();
@@ -100,9 +101,20 @@ export function ManageItems() {
         </div>
       </div>
 
-      <Button asChild className="relative w-full">
-        <Link href={"export"}>Split Bills - ({total})</Link>
-      </Button>
+      <StickyActionBar>
+        <Button
+          asChild
+          className="h-20 w-full justify-between rounded-3xl px-6"
+        >
+          <Link href={"export"}>
+            <div className="text-2xl">Split Bills</div>
+            <div className="text-right font-medium leading-tight">
+              <span className="text-xs">TOTAL</span> <br />
+              {formatCurrency(total)}
+            </div>
+          </Link>
+        </Button>
+      </StickyActionBar>
 
       <EditItemDialog
         open={!!editingItem}

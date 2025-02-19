@@ -66,6 +66,13 @@ export function AddItems() {
 
       setIsOpen(false);
     }
+
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 50);
   };
 
   const toggleFriendAssignment = (friendId: string) => {
@@ -106,7 +113,7 @@ export function AddItems() {
   return (
     <>
       <Button
-        className="flex h-auto w-full items-center justify-center gap-1.5 border-2 border-dashed px-1.5 py-3 font-semibold text-neutral-500 hover:text-neutral-900"
+        className="flex h-20 w-full items-center justify-center gap-1.5 border-2 border-dashed px-1.5 py-3 font-semibold text-neutral-500 hover:text-neutral-900"
         variant="secondary"
         onClick={() => setIsOpen(true)}
       >

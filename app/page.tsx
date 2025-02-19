@@ -5,10 +5,8 @@ import { ManageItems } from "@/components/manage-items";
 export default function Splidzy() {
   return (
     <>
-      <main className="mx-auto flex max-w-md flex-col justify-center gap-4">
-        <ManageFriends />
-        <ManageItems />
-      </main>
+      <ManageFriends />
+      <ManageItems />
     </>
   );
 }

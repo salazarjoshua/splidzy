@@ -1,13 +1,11 @@
 "use client";
 import { FriendTagAvatar } from "@/components/friend-tag";
-import { Download } from "@/components/icons";
-import { Button, ButtonIcon } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useStore } from "@/store/useStore";
 import { toPng } from "html-to-image";
-import Link from "next/link";
 import React, { useRef, useState } from "react";
-import { ArrowLeft } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import StickyActionBar from "@/components/sticky-action-bar";
 
 const Export = () => {
   const { friends, items } = useStore();
@@ -112,19 +110,7 @@ const Export = () => {
   };
 
   return (
-    <section className="mx-auto flex flex-col gap-4 sm:max-w-md">
-      <div className="flex items-center justify-between">
-        <Button
-          asChild
-          variant={"outline"}
-          size={"icon"}
-          className="rounded-xl font-medium text-neutral-500"
-        >
-          <Link href={"/"}>
-            <ArrowLeft size={16} />
-          </Link>
-        </Button>
-      </div>
+    <>
       <div
         className="flex flex-col gap-8 rounded-3xl border border-neutral-200 bg-white p-6 pb-10"
         ref={receiptRef}
@@ -173,36 +159,33 @@ const Export = () => {
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-between gap-2">
+      <StickyActionBar>
         <Button
           onClick={handleCopyReceiptText}
           variant={"outline"}
-          className="relative overflow-hidden"
+          className="relative flex-1 overflow-hidden text-neutral-950"
           disabled={friends.length === 0}
         >
           <span
-            className={`${isCopied ? "-translate-y-[150%]" : "translate-y-0"} transition-all`}
+            className={`${isCopied ? "-translate-y-full" : "translate-y-0"} absolute inset-0 top-0 flex items-center justify-center transition-transform`}
           >
             Copy as text
           </span>
           <span
-            className={`${isCopied ? "translate-y-0" : "translate-y-[150%]"} absolute left-1/2 -translate-x-1/2 transition-all`}
+            className={`${isCopied ? "translate-y-0" : "translate-y-full"} absolute inset-0 top-0 flex items-center justify-center transition-transform`}
           >
             Copied 🥳
           </span>
         </Button>
         <Button
           onClick={exportReceipt}
-          className="relative flex-1"
+          className="flex-1"
           disabled={friends.length === 0}
         >
-          <ButtonIcon>
-            <Download />
-          </ButtonIcon>
           Export as image
         </Button>
-      </div>
-    </section>
+      </StickyActionBar>
+    </>
   );
 };
 
