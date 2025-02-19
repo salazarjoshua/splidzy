@@ -4,13 +4,14 @@ import React from "react";
 import { EditFriendPopover } from "@/components/edit-friend-popover";
 import { useStore } from "@/store/useStore";
 import AddFriends from "./add-friends";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export function ManageFriends() {
   const { friends } = useStore();
 
   return (
-    <div className="relative flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white px-4 py-2">
-      <div className="no-scrollbar -mx-4 flex gap-1.5 overflow-x-auto px-4 py-2">
+    <ScrollArea className="w-full max-w-md rounded-3xl border border-neutral-200 bg-white">
+      <div className="flex gap-1.5 p-4">
         <AddFriends />
         {friends.map((friend) => (
           <div key={friend.id}>
@@ -18,6 +19,7 @@ export function ManageFriends() {
           </div>
         ))}
       </div>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 }

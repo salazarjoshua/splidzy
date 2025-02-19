@@ -15,6 +15,7 @@ import {
   validatePrice,
 } from "@/lib/validate-inputs";
 import { cn } from "@/lib/utils";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 export function AddItems() {
   const [isOpen, setIsOpen] = useState(false);
@@ -172,15 +173,12 @@ export function AddItems() {
             />
           </div>
 
-          <div
-            className={cn(
-              "-mx-6 -mb-2 -mt-4 overflow-x-hidden transition-colors",
-              friendsIsError && "bg-red-50/75",
-            )}
+          <ScrollArea
+            className={cn("-mx-6 -my-2 py-2", friendsIsError && "bg-red-50/75")}
           >
             <div
               className={cn(
-                "no-scrollbar flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2",
+                "flex gap-1.5 px-6",
                 friendsIsError && "animate-shake",
               )}
             >
@@ -197,7 +195,8 @@ export function AddItems() {
                 />
               ))}
             </div>
-          </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
 
           <div className="flex items-center justify-end gap-4 border-t border-neutral-200 pt-6">
             <Button
