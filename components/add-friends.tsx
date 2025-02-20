@@ -71,7 +71,7 @@ const AddFriends = () => {
         onClick={() => setIsOpen(true)}
       >
         <div className="flex size-16 items-center justify-center">
-          <div className="relative flex aspect-square size-14 items-center justify-center rounded-full border-2 border-dashed border-neutral-200 bg-neutral-100 text-neutral-500 transition-colors group-hover:bg-neutral-100/80 group-hover:text-neutral-900">
+          <div className="relative flex aspect-square size-14 items-center justify-center rounded-full border-2 border-dashed border-neutral-200 bg-neutral-100 text-neutral-500 transition-colors group-hover:bg-neutral-100/80 group-hover:text-neutral-700">
             <Plus strokeWidth="3" size={16} />
           </div>
         </div>

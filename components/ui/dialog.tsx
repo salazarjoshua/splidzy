@@ -5,6 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "./button";
 
 const Dialog = DialogPrimitive.Root;
 
@@ -38,18 +39,24 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-6 border border-neutral-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] dark:border-neutral-800 dark:bg-neutral-950 sm:rounded-3xl",
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-6 rounded-3xl border border-neutral-200 bg-white p-6 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] dark:border-neutral-800 dark:bg-neutral-950",
         className,
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute -top-2 right-0 flex -translate-y-full items-center gap-1 rounded-full bg-white py-0.5 pl-1 pr-2 text-sm font-medium ring-offset-white transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-neutral-100 data-[state=open]:text-neutral-500 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300 dark:data-[state=open]:bg-neutral-800 dark:data-[state=open]:text-neutral-400">
-        <div className="flex size-4 items-center justify-center rounded-full bg-neutral-800 text-white">
-          <X size={12} strokeWidth={3} />
-        </div>
-        <span>Close</span>
-      </DialogPrimitive.Close>
+      <Button
+        variant={"secondary"}
+        className="absolute right-6 top-8 size-8 rounded-full bg-neutral-100 p-0 [&_svg]:size-4"
+        asChild
+      >
+        <DialogPrimitive.Close>
+          <X
+            strokeWidth={3}
+            className="text-neutral-500 transition-colors group-hover:text-neutral-700"
+          />
+        </DialogPrimitive.Close>
+      </Button>
     </DialogPrimitive.Content>
   </DialogPortal>
 ));
@@ -61,7 +68,7 @@ const DialogHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
+      "flex h-10 flex-col justify-center pl-1 pt-2 text-left",
       className,
     )}
     {...props}
@@ -89,7 +96,7 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn("text-center text-lg font-bold", className)}
+    className={cn("text-xl font-bold", className)}
     {...props}
   />
 ));
