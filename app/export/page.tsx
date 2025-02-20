@@ -5,7 +5,6 @@ import { useStore } from "@/store/useStore";
 import { toPng } from "html-to-image";
 import React, { useRef, useState } from "react";
 import { formatCurrency } from "@/lib/utils";
-import StickyActionBar from "@/components/sticky-action-bar";
 
 const Export = () => {
   const { friends, items } = useStore();
@@ -159,7 +158,7 @@ const Export = () => {
           </p>
         </div>
       </div>
-      <StickyActionBar>
+      <div className="flex gap-2">
         <Button
           onClick={handleCopyReceiptText}
           variant={"outline"}
@@ -184,7 +183,7 @@ const Export = () => {
         >
           Export as image
         </Button>
-      </StickyActionBar>
+      </div>
     </>
   );
 };
