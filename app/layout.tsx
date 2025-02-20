@@ -6,19 +6,19 @@ import Nav from "@/components/nav";
 const sfProRounded = localFont({
   src: [
     {
-      path: "./SF-Pro-rounded-Regular.otf",
+      path: "./fonts/SF-Pro-Rounded-Regular.otf",
       weight: "400",
     },
     {
-      path: "./SF-Pro-rounded-Medium.otf",
+      path: "./fonts/SF-Pro-Rounded-Medium.otf",
       weight: "500",
     },
     {
-      path: "./SF-Pro-rounded-Semibold.otf",
+      path: "./fonts/SF-Pro-Rounded-Semibold.otf",
       weight: "600",
     },
     {
-      path: "./SF-Pro-rounded-Bold.otf",
+      path: "./fonts/SF-Pro-Rounded-Bold.otf",
       weight: "700",
     },
   ],
