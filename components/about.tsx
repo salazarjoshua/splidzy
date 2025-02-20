@@ -50,7 +50,7 @@ const About = () => {
 
             <Button variant="outline" size="withIcon" asChild>
               <Link
-                href={"https://github.com/salazarjoshua/paymixx"}
+                href={"https://github.com/salazarjoshua/splidzy"}
                 target="_blank"
               >
                 <div className="flex size-5 items-center justify-center rounded-full bg-neutral-800 text-white">

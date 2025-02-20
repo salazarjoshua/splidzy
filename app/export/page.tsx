@@ -58,7 +58,7 @@ const Export = () => {
         );
 
         const link = document.createElement("a");
-        link.download = "receipt-paymixx.png";
+        link.download = "receipt-splidzy.png";
         link.href = pngDataUrl;
         link.click();
       } catch (error) {
