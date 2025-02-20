@@ -8,14 +8,20 @@ import { useStore } from "@/store/useStore";
 import type { Item } from "@/types";
 import React from "react";
 import DashedUnderline from "./ui/dashed-underline";
-import Link from "next/link";
 import { AddItems } from "./add-items";
 import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Check, Loader } from "./icons";
 
 export function ManageItems() {
+  const router = useRouter();
   const { friends, items, editItem } = useStore();
   const [editingItem, setEditingItem] = useState<Item | null>(null);
+
+  const handleClick = (href: string) => {
+    router.push(href);
+  };
 
   const currentItems = items;
 
@@ -100,14 +106,39 @@ export function ManageItems() {
         </div>
       </div>
 
-      <Button asChild className="h-20 w-full justify-between rounded-3xl px-6">
-        <Link href={"export"}>
-          <div className="text-2xl">Split Bills</div>
-          <div className="text-right font-medium leading-tight">
-            <span className="text-xs">TOTAL</span> <br />
-            {formatCurrency(total)}
+      <Button
+        onClick={() => handleClick("export")}
+        className="h-20 w-full justify-between rounded-3xl px-6 disabled:opacity-100"
+        disabled={friends.length < 2 || currentItems.length < 2}
+      >
+        <div className="text-2xl group-disabled:opacity-50">Split Bills</div>
+        {friends.length < 2 || currentItems.length < 2 ? (
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="flex items-center gap-1 text-xs font-semibold text-neutral-400">
+              {friends.length < 2 ? (
+                <Loader className="duration-[3s] animate-spin-slow size-3" />
+              ) : (
+                <Check className="w-3 text-green-500" />
+              )}
+              Add at least <span className="text-white">1 friend</span>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-neutral-400">
+              {currentItems.length < 2 ? (
+                <Loader className="duration-[3s] animate-spin-slow size-3" />
+              ) : (
+                <Check className="w-3 text-green-500" />
+              )}
+              Add at least <span className="text-white">2 items</span>
+            </div>
           </div>
-        </Link>
+        ) : (
+          <>
+            <div className="text-right font-medium leading-tight">
+              <span className="text-xs text-neutral-400">TOTAL</span> <br />
+              {formatCurrency(total)}
+            </div>
+          </>
+        )}
       </Button>
 
       <EditItemDialog

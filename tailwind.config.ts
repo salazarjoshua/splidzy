@@ -23,6 +23,7 @@ const config: Config = {
 			},
 			animation: {
 				'shake': 'shake 0.5s linear',
+				'spin-slow': 'spin 2.25s linear infinite',
 			},
 			keyframes: {
 				'shake': {
