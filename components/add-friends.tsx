@@ -105,7 +105,7 @@ const AddFriends = () => {
             </Button>
           </form>
 
-          <ScrollArea ref={friendsListRef} className="-mx-6 -my-2 py-2">
+          <ScrollArea ref={friendsListRef} className="-mx-6 -my-2 [&>div]:py-2">
             <div className="flex gap-1.5 px-6">
               {localFriends.map((friend) => (
                 <FriendTag

@@ -159,7 +159,10 @@ export function EditItemDialog({
         </div>
 
         <ScrollArea
-          className={cn("-mx-6 -my-2 py-2", friendsIsError && "bg-red-50/75")}
+          className={cn(
+            "-mx-6 -my-2 [&>div]:py-2",
+            friendsIsError && "bg-red-50/75",
+          )}
         >
           <div
             className={cn(
