@@ -14,6 +14,12 @@ import type { Friend } from "@/types";
 import { FriendTag } from "./friend-tag";
 import { useState } from "react";
 import { checkValidInput } from "@/lib/validate-inputs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface EditFriendPopoverProps {
   friend: Friend;
@@ -68,16 +74,35 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              onClick={() => {
-                removeFriend(friend.id);
-                setIsOpen(false);
-              }}
-              className="bg-red-50 text-red-500 hover:bg-red-100"
-            >
-              <Trash className="size-4" />
-            </Button>
+            {friend.id === "itzyitzy" ? (
+              <TooltipProvider delayDuration={100}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button
+                      type="button"
+                      className="bg-red-50 text-red-500 hover:bg-red-100"
+                      disabled
+                    >
+                      <Trash className="size-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="text-xs">
+                    Stuck with you forever!
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <Button
+                type="button"
+                onClick={() => {
+                  removeFriend(friend.id);
+                  setIsOpen(false);
+                }}
+                className="bg-red-50 text-red-500 hover:bg-red-100"
+              >
+                <Trash className="size-4" />
+              </Button>
+            )}
             <Button
               type="submit"
               className="flex-1 bg-green-500 text-green-50 hover:bg-green-500/90"

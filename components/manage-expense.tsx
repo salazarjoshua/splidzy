@@ -63,9 +63,8 @@ export function ManageItems() {
 
   if (currentItems.length === 0)
     return (
-      <div className="flex min-h-full flex-1 flex-col items-center justify-center rounded-3xl border border-neutral-200 bg-white p-4 text-sm font-medium">
+      <div className="flex min-h-full flex-1 flex-col items-center justify-center rounded-3xl border border-neutral-200 bg-white p-4 text-center text-sm font-medium">
         <div className="mb-2 flex gap-0.5">
-          <Image src={"/tossface/night.svg"} alt="" width={18} height={18} />
           <Image
             src={"/tossface/spaghetti.svg"}
             alt=""
@@ -74,6 +73,7 @@ export function ManageItems() {
           />
           <Image src={"/tossface/disco.svg"} alt="" width={18} height={18} />
           <Image src={"/tossface/dizzy.svg"} alt="" width={18} height={18} />
+          <Image src={"/tossface/beach.svg"} alt="" width={18} height={18} />
         </div>
         <h2 className="mb-2.5 text-neutral-500">
           All expenses will appear right here.
@@ -86,7 +86,7 @@ export function ManageItems() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col rounded-3xl border border-neutral-200 bg-white p-4 pb-12">
+      <div className="flex min-h-full flex-1 flex-col rounded-3xl border border-neutral-200 bg-white p-4">
         {currentItems.map((item, index) => (
           <div key={item.id}>
             <Button
@@ -94,9 +94,9 @@ export function ManageItems() {
               variant="secondary"
               className="relative h-auto w-full rounded-2xl bg-transparent p-4"
             >
-              <div className="flex-1 space-y-1">
+              <div className="w-full flex-1 space-y-1">
                 <div className="flex items-center justify-between gap-2 md:gap-8">
-                  <h3 className="truncate">{item.name}</h3>
+                  <h3 className="flex-1 truncate text-left">{item.name}</h3>
                   <div className="shrink-0">{formatCurrency(item.price)}</div>
                 </div>
                 <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
