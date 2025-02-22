@@ -3,32 +3,20 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FriendTagAvatar } from "./friend-tag";
-import { EditItemDialog } from "@/components/edit-item-dialog";
+import { EditItemDialog } from "@/components/edit-expense-dialog";
 import { useStore } from "@/store/useStore";
 import type { Item } from "@/types";
 import React from "react";
 import DashedUnderline from "./ui/dashed-underline";
-import { AddItems } from "./add-items";
 import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Check, Loader } from "./icons";
+import { AddExpenseButton } from "./add-expense-button";
 
 export function ManageItems() {
-  const router = useRouter();
   const { friends, items, editItem } = useStore();
   const [editingItem, setEditingItem] = useState<Item | null>(null);
 
-  const handleClick = (href: string) => {
-    router.push(href);
-  };
-
   const currentItems = items;
-
-  const total = currentItems.reduce((sum, item) => {
-    const amount = item.price;
-    return sum + amount;
-  }, 0);
 
   const renderAssignedFriends = (
     isAllFriends: boolean,
@@ -68,9 +56,37 @@ export function ManageItems() {
     );
   };
 
+  const total = currentItems.reduce((sum, item) => {
+    const amount = item.price;
+    return sum + amount;
+  }, 0);
+
+  if (currentItems.length === 0)
+    return (
+      <div className="flex min-h-full flex-1 flex-col items-center justify-center rounded-3xl border border-neutral-200 bg-white p-4 text-sm font-medium">
+        <div className="mb-2 flex gap-0.5">
+          <Image src={"/tossface/night.svg"} alt="" width={18} height={18} />
+          <Image
+            src={"/tossface/spaghetti.svg"}
+            alt=""
+            width={18}
+            height={18}
+          />
+          <Image src={"/tossface/disco.svg"} alt="" width={18} height={18} />
+          <Image src={"/tossface/dizzy.svg"} alt="" width={18} height={18} />
+        </div>
+        <h2 className="mb-2.5 text-neutral-500">
+          All expenses will appear right here.
+        </h2>
+        <AddExpenseButton variant="link" className="h-auto p-0">
+          + Add Expense
+        </AddExpenseButton>
+      </div>
+    );
+
   return (
     <>
-      <div className="flex w-full flex-col rounded-3xl border border-neutral-200 bg-white p-4">
+      <div className="flex min-h-full flex-1 flex-col rounded-3xl border border-neutral-200 bg-white p-4 pb-12">
         {currentItems.map((item, index) => (
           <div key={item.id}>
             <Button
@@ -100,46 +116,7 @@ export function ManageItems() {
             )}
           </div>
         ))}
-
-        <div className={`${currentItems.length !== 0 && "mt-4"}`}>
-          <AddItems />
-        </div>
       </div>
-
-      <Button
-        onClick={() => handleClick("export")}
-        className="h-20 w-full justify-between rounded-3xl px-6 disabled:opacity-100"
-        disabled={friends.length < 2 || currentItems.length < 2}
-      >
-        <div className="text-2xl group-disabled:opacity-50">Split Bills</div>
-        {friends.length < 2 || currentItems.length < 2 ? (
-          <div className="flex flex-col items-center justify-center gap-2">
-            <div className="flex items-center gap-1 text-xs font-semibold text-neutral-400">
-              {friends.length < 2 ? (
-                <Loader className="duration-[3s] animate-spin-slow size-3" />
-              ) : (
-                <Check className="w-3 text-green-500" />
-              )}
-              Add at least <span className="text-white">1 friend</span>
-            </div>
-            <div className="flex items-center gap-1 text-xs font-semibold text-neutral-400">
-              {currentItems.length < 2 ? (
-                <Loader className="duration-[3s] animate-spin-slow size-3" />
-              ) : (
-                <Check className="w-3 text-green-500" />
-              )}
-              Add at least <span className="text-white">2 items</span>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="text-right font-medium leading-tight">
-              <span className="text-xs text-neutral-400">TOTAL</span> <br />
-              {formatCurrency(total)}
-            </div>
-          </>
-        )}
-      </Button>
 
       <EditItemDialog
         open={!!editingItem}

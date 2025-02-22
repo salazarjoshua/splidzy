@@ -77,7 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfProRounded.variable} font-sans antialiased`}>
-        <div className="mx-auto flex min-h-dvh max-w-md flex-col gap-4 px-4 py-8">
+        <div className="mx-auto flex min-h-dvh max-w-md flex-col justify-end gap-4 px-4 pb-2 pt-8">
           <Nav />
           {children}
         </div>

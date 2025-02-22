@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import { useStore, colors } from "@/store/useStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import Image from "next/image";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import { Friend } from "@/types";
 import { FriendTag } from "./friend-tag";
@@ -66,16 +66,13 @@ const AddFriends = () => {
   return (
     <>
       <Button
-        className="flex size-16 h-auto w-16 flex-col items-center justify-center gap-1.5 border-0 bg-transparent px-1.5 py-1 text-sm font-medium hover:bg-transparent"
+        className="text-neutral-500"
         variant="secondary"
+        size={"lg"}
         onClick={() => setIsOpen(true)}
       >
-        <div className="flex size-16 items-center justify-center">
-          <div className="relative flex aspect-square size-14 items-center justify-center rounded-full border-2 border-dashed border-neutral-200 bg-neutral-100 text-neutral-500 transition-colors group-hover:bg-neutral-100/80 group-hover:text-neutral-700">
-            <Plus strokeWidth="3" size={16} />
-          </div>
-        </div>
-        Add
+        <Image src={"/tossface/friends.svg"} alt="" width={24} height={24} />
+        Add Friends
       </Button>
 
       <ResponsiveDialogDrawer
