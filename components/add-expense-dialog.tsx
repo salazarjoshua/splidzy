@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/store/useStore";
-import { FriendTag } from "./friend-tag";
+import { FriendTag, FriendTagAvatar, FriendTagName } from "./friend-tag";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import { Check } from "./icons";
 import { Switch } from "./ui/switch";
@@ -170,18 +170,36 @@ export function AddExpenseDialog({
               friendsIsError && "animate-shake",
             )}
           >
-            {friends.map((friend) => (
-              <FriendTag
-                type="button"
-                key={friend.id}
-                onClick={() => toggleFriendAssignment(friend.id)}
-                name={friend.name}
-                color={friend.color}
-                selected={newItem.assignedTo.includes(friend.id)}
-                friendTagVariant="select"
-                className="bg-transparent"
-              />
-            ))}
+            {friends.map((friend) => {
+              const isAssigned = newItem.assignedTo.includes(friend.id);
+
+              return (
+                <FriendTag
+                  key={friend.id}
+                  friend={friend}
+                  type="button"
+                  onClick={() => toggleFriendAssignment(friend.id)}
+                  className="bg-transparent"
+                >
+                  <FriendTagAvatar
+                    className={cn(
+                      "border-neutral-200",
+                      isAssigned && "border-green-500",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "absolute bottom-0 right-0 flex h-5 w-5 translate-x-1 items-center justify-center rounded-full border-2 bg-white transition-transform",
+                        isAssigned && "border-white text-green-500",
+                      )}
+                    >
+                      {isAssigned && <Check className="h-4 w-4" />}
+                    </div>
+                  </FriendTagAvatar>
+                  <FriendTagName />
+                </FriendTag>
+              );
+            })}
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>

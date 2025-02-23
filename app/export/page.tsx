@@ -1,5 +1,5 @@
 "use client";
-import { FriendTagAvatar } from "@/components/friend-tag";
+import { FriendTagAvatar, FriendTagProvider } from "@/components/friend-tag";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/store/useStore";
 import { toPng } from "html-to-image";
@@ -131,11 +131,9 @@ const Export = () => {
                 }
               >
                 <div className="flex items-center gap-1.5">
-                  <FriendTagAvatar
-                    name={friend.name}
-                    color={friend.color}
-                    className="size-14"
-                  />
+                  <FriendTagProvider friend={friend}>
+                    <FriendTagAvatar />
+                  </FriendTagProvider>
                   <div>
                     <h2 className="font-semibold">{friend.name}</h2>
                     <p className="text-sm text-neutral-500">

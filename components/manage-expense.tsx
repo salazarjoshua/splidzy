@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { FriendTagAvatar } from "./friend-tag";
+import { FriendTagProvider, FriendTagAvatar } from "./friend-tag";
 import { EditItemDialog } from "@/components/edit-expense-dialog";
 import { useStore } from "@/store/useStore";
 import type { Item } from "@/types";
@@ -41,12 +41,9 @@ export function ManageItems() {
       <div className="flex items-center gap-1">
         <div className="flex -space-x-1.5">
           {displayedFriends.map((friend) => (
-            <FriendTagAvatar
-              key={friend.id}
-              name={friend.name}
-              color={friend.color}
-              className="size-7 border-2 border-white p-0 text-xs"
-            />
+            <FriendTagProvider key={friend.id} friend={friend}>
+              <FriendTagAvatar className="size-7 border-2 border-white p-0 text-xs" />
+            </FriendTagProvider>
           ))}
         </div>
         {remainingCount > 0 && (

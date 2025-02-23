@@ -30,7 +30,7 @@ const ExportButton = () => {
     >
       <Image src={"/tossface/scissors.svg"} alt="" width={24} height={24} />
       Split
-      <div className="absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 rotate-[5deg] rounded-full border border-yellow-400 bg-yellow-200 px-2 py-0.5 text-right text-sm font-semibold text-yellow-950">
+      <div className="absolute right-0 top-0 -translate-y-1/2 translate-x-2 rotate-[5deg] rounded-full border border-yellow-400 bg-yellow-200 px-2 py-0.5 text-right text-sm font-semibold text-yellow-950">
         <Image
           src={"/tossface/money.svg"}
           alt=""

@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import { Friend } from "@/types";
-import { FriendTag } from "./friend-tag";
+import { Minus } from "lucide-react";
+import { FriendTag, FriendTagAvatar, FriendTagName } from "./friend-tag";
 import { v4 as uuidv4 } from "uuid";
 import { Check } from "./icons";
 import { checkValidInput } from "@/lib/validate-inputs";
@@ -101,12 +102,16 @@ const AddFriends = () => {
             <div className="flex gap-1.5 px-6">
               {localFriends.map((friend) => (
                 <FriendTag
-                  key={friend.id}
-                  name={friend.name}
-                  color={friend.color}
+                  friend={friend}
                   onClick={() => removeLocalFriend(friend.id)}
-                  friendTagVariant="delete"
-                />
+                >
+                  <FriendTagAvatar>
+                    <div className="absolute left-0 top-0 flex size-5 -translate-x-1 items-center justify-center rounded-full bg-neutral-200 text-neutral-600 transition-colors group-hover:bg-red-500 group-hover:text-white [&_svg]:size-3">
+                      <Minus strokeWidth={3} />
+                    </div>
+                  </FriendTagAvatar>
+                  <FriendTagName />
+                </FriendTag>
               ))}
             </div>
             <ScrollBar orientation="horizontal" />

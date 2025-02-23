@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { useStore } from "@/store/useStore";
 import type { Friend } from "@/types";
-import { FriendTag } from "./friend-tag";
+import { FriendTag, FriendTagAvatar, FriendTagName } from "./friend-tag";
 import { useState } from "react";
 import { checkValidInput } from "@/lib/validate-inputs";
 import {
@@ -53,7 +53,10 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
       }}
     >
       <PopoverTrigger asChild>
-        <FriendTag name={friend.name} color={friend.color} />
+        <FriendTag friend={friend}>
+          <FriendTagAvatar />
+          <FriendTagName />
+        </FriendTag>
       </PopoverTrigger>
       <PopoverContent className="w-full min-w-[256px] rounded-2xl p-2">
         <form onSubmit={handleSave} className="flex flex-col gap-2">

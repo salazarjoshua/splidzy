@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FriendTag } from "./friend-tag";
+import { FriendTag, FriendTagAvatar, FriendTagName } from "./friend-tag";
 import { useStore } from "@/store/useStore";
 import { Check, Trash } from "./icons";
 import { Item, Friend } from "@/types";
@@ -170,18 +170,36 @@ export function EditItemDialog({
               friendsIsError && "animate-shake",
             )}
           >
-            {friends.map((friend) => (
-              <FriendTag
-                type="button"
-                key={friend.id}
-                onClick={() => toggleFriendAssignment(friend.id)}
-                name={friend.name}
-                color={friend.color}
-                selected={localItem?.assignedTo.includes(friend.id)}
-                friendTagVariant="select"
-                className="bg-transparent"
-              />
-            ))}
+            {friends.map((friend) => {
+              const isAssigned = localItem?.assignedTo.includes(friend.id);
+
+              return (
+                <FriendTag
+                  key={friend.id}
+                  friend={friend}
+                  type="button"
+                  onClick={() => toggleFriendAssignment(friend.id)}
+                  className="bg-transparent"
+                >
+                  <FriendTagAvatar
+                    className={cn(
+                      "border-neutral-200",
+                      isAssigned && "border-green-500",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "absolute bottom-0 right-0 flex h-5 w-5 translate-x-1 items-center justify-center rounded-full border-2 bg-white transition-transform",
+                        isAssigned && "border-white text-green-500",
+                      )}
+                    >
+                      {isAssigned && <Check className="h-4 w-4" />}
+                    </div>
+                  </FriendTagAvatar>
+                  <FriendTagName />
+                </FriendTag>
+              );
+            })}
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
