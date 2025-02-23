@@ -5,6 +5,8 @@ import { useStore } from "@/store/useStore";
 import { toPng } from "html-to-image";
 import React, { useRef, useState } from "react";
 import { formatCurrency } from "@/lib/utils";
+import StickyActionBar from "@/components/sticky-action-bar";
+import Image from "next/image";
 
 const Export = () => {
   const { friends, items } = useStore();
@@ -158,32 +160,35 @@ const Export = () => {
           </p>
         </div>
       </div>
-      <div className="flex gap-2">
+
+      <StickyActionBar>
         <Button
           onClick={handleCopyReceiptText}
-          variant={"outline"}
-          className="relative flex-1 overflow-hidden text-neutral-950"
+          variant="secondary"
+          size={"lg"}
           disabled={friends.length === 0}
         >
-          <span
-            className={`${isCopied ? "-translate-y-full" : "translate-y-0"} absolute inset-0 top-0 flex items-center justify-center transition-transform`}
-          >
-            Copy as text
-          </span>
-          <span
-            className={`${isCopied ? "translate-y-0" : "translate-y-full"} absolute inset-0 top-0 flex items-center justify-center transition-transform`}
-          >
-            Copied 🥳
-          </span>
+          {isCopied ? (
+            <Image src={"/tossface/check.svg"} alt="" width={24} height={24} />
+          ) : (
+            <Image
+              src={"/tossface/clipboard.svg"}
+              alt=""
+              width={24}
+              height={24}
+            />
+          )}
+          {isCopied ? "Copied" : "Copy as text"}
         </Button>
         <Button
           onClick={exportReceipt}
-          className="flex-1"
+          size={"lg"}
           disabled={friends.length === 0}
         >
-          Export as image
+          <Image src={"/tossface/receipt.svg"} alt="" width={24} height={24} />
+          Download Image
         </Button>
-      </div>
+      </StickyActionBar>
     </>
   );
 };

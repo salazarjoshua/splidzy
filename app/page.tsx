@@ -14,20 +14,14 @@ export default function Splidzy() {
       <ManageFriends />
       <ManageItems />
       <StickyActionBar>
-        <div className="grid w-full grid-cols-3 flex-col gap-2 rounded-3xl border border-neutral-200 bg-white p-2">
-          <AddFriends />
+        <AddFriends />
 
-          <AddExpenseButton
-            variant={"secondary"}
-            size={"lg"}
-            className="text-neutral-500"
-          >
-            <Image src="/tossface/money.svg" alt="" width={24} height={24} />
-            Add Expense
-          </AddExpenseButton>
+        <AddExpenseButton variant={"secondary"} size={"lg"}>
+          <Image src="/tossface/money.svg" alt="" width={24} height={24} />
+          Add Expense
+        </AddExpenseButton>
 
-          <ExportButton />
-        </div>
+        <ExportButton />
       </StickyActionBar>
     </>
   );

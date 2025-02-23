@@ -10,7 +10,7 @@ const Nav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center justify-between gap-4">
+    <nav className="sticky top-2 z-50 flex items-center justify-between gap-4">
       <div>
         {pathname !== "/" && (
           <Button asChild variant={"outline"} size={"icon"}>
@@ -21,7 +21,12 @@ const Nav = () => {
         )}
       </div>
       <div>
-        <Button variant={"outline"} size={"icon"} asChild>
+        <Button
+          variant={"outline"}
+          size={"icon"}
+          asChild
+          className="rounded-full"
+        >
           <Link href="/about/general">
             <Info />
           </Link>

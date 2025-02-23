@@ -18,7 +18,7 @@ const ExportButton = () => {
   return (
     <Button
       onClick={() => handleClick("export")}
-      className="relative disabled:bg-neutral-900/50 disabled:text-neutral-300 disabled:opacity-100 disabled:grayscale"
+      className="disabled:bg-neutral-900/50 disabled:text-neutral-300 disabled:opacity-100 disabled:grayscale"
       size={"lg"}
       disabled={friends.length < 1 || currentItems.length < 1}
     >

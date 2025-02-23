@@ -65,12 +65,7 @@ const AddFriends = () => {
 
   return (
     <>
-      <Button
-        className="text-neutral-500"
-        variant="secondary"
-        size={"lg"}
-        onClick={() => setIsOpen(true)}
-      >
+      <Button variant="secondary" size={"lg"} onClick={() => setIsOpen(true)}>
         <Image src={"/tossface/friends.svg"} alt="" width={24} height={24} />
         Add Friends
       </Button>
