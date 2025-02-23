@@ -102,6 +102,7 @@ const AddFriends = () => {
             <div className="flex gap-1.5 px-6">
               {localFriends.map((friend) => (
                 <FriendTag
+                  key={friend.id}
                   friend={friend}
                   onClick={() => removeLocalFriend(friend.id)}
                 >

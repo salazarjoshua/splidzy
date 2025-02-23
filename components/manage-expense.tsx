@@ -53,11 +53,6 @@ export function ManageItems() {
     );
   };
 
-  const total = currentItems.reduce((sum, item) => {
-    const amount = item.price;
-    return sum + amount;
-  }, 0);
-
   if (currentItems.length === 0)
     return (
       <div className="flex min-h-full flex-1 flex-col items-center justify-center rounded-3xl border border-neutral-200 bg-white p-4 text-center text-sm font-medium">

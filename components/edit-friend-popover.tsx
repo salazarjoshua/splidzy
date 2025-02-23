@@ -90,7 +90,7 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-xs">
-                    can't delete urself bro
+                    {"can't delete urself bro"}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

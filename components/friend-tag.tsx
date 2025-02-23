@@ -1,7 +1,6 @@
 import * as React from "react";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { calculateFriendTotal } from "@/store/calculations";
 
 const colorStyles = {
   yellow: "bg-yellow-200 text-yellow-900",
@@ -36,16 +35,6 @@ interface FriendTagContextValue {
 const FriendTagContext = React.createContext<FriendTagContextValue | undefined>(
   undefined,
 );
-
-const useFriendTag = () => {
-  const context = React.useContext(FriendTagContext);
-  if (!context) {
-    throw new Error(
-      "Compound components must be used within a FriendTagProvider",
-    );
-  }
-  return context.friend;
-};
 
 export interface FriendTagProviderProps {
   friend: Friend;
@@ -102,12 +91,9 @@ export const FriendTagAvatar: React.FC<FriendTagAvatarProps> = ({
   children,
   ...props
 }) => {
-  let friend: Friend | undefined;
-  try {
-    friend = useFriendTag();
-  } catch {
-    friend = undefined;
-  }
+  const context = React.useContext(FriendTagContext);
+  const friend = context?.friend;
+
   const name = propName || friend?.name || "";
   const color = propColor || friend?.color || "yellow";
 
@@ -143,13 +129,11 @@ export const FriendTagName: React.FC<FriendTagNameProps> = ({
   className,
   ...props
 }) => {
-  let friend: Friend | undefined;
-  try {
-    friend = useFriendTag();
-  } catch {
-    friend = undefined;
-  }
+  const context = React.useContext(FriendTagContext);
+  const friend = context?.friend;
+
   const displayText = text || friend?.name || "";
+
   return (
     <div
       className={cn("w-full text-center text-sm font-medium", className)}
