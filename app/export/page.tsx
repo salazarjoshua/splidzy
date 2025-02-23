@@ -182,10 +182,11 @@ const Export = () => {
         </Button>
         <Button
           onClick={exportReceipt}
+          variant="secondary"
           size={"lg"}
           disabled={friends.length === 0}
         >
-          <Image src={"/tossface/receipt.svg"} alt="" width={24} height={24} />
+          <Image src={"/tossface/download.svg"} alt="" width={24} height={24} />
           Download Image
         </Button>
       </StickyActionBar>

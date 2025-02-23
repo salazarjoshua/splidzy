@@ -109,16 +109,13 @@ export function ManageItems() {
                 </div>
               </div>
             </Button>
+            {index !== currentItems.length - 1 && (
+              <div className="px-4 text-neutral-100">
+                <DashedUnderline />
+              </div>
+            )}
           </div>
         ))}
-
-        <div className="px-4 text-neutral-100">
-          <DashedUnderline />
-        </div>
-        <div className="mt-2 flex items-center justify-between gap-2 p-4 font-semibold md:gap-8">
-          <h3>Total</h3>
-          {formatCurrency(total)}
-        </div>
       </div>
 
       <EditItemDialog

@@ -80,14 +80,14 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
                   <TooltipTrigger>
                     <Button
                       type="button"
-                      className="bg-red-50 text-red-500 hover:bg-red-100"
+                      className="bg-red-50 text-red-500 hover:bg-red-100 disabled:bg-neutral-100 disabled:text-neutral-300 disabled:opacity-100"
                       disabled
                     >
                       <Trash className="size-4" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-xs">
-                    Stuck with you forever!
+                    can't delete urself bro
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
