@@ -24,8 +24,8 @@ export function ManageItems() {
   ) => {
     if (isAllFriends) {
       return (
-        <div className="flex items-center gap-1 text-neutral-600">
-          <Image src="/bff.webp" width={28} height={28} alt="" />
+        <div className="flex h-[28px] items-center gap-0.5 text-neutral-600">
+          <Image src="/tossface/pie.svg" width={20} height={20} alt="" />
           <span>{`Everyone's in! `}</span>
         </div>
       );

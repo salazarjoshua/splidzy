@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
+import Image from "next/image";
 
 const colorStyles = {
   yellow: "bg-yellow-200 text-yellow-900",
@@ -19,7 +20,15 @@ const getInitial = (name: string) => {
     .filter(Boolean);
   return match.length > 1
     ? match[0]!.toUpperCase() + match[1]!.toUpperCase()
-    : match[0]?.toUpperCase() || "😗";
+    : match[0]?.toUpperCase() || (
+        <Image
+          src="/tossface/cat.svg"
+          alt=""
+          width={24}
+          height={24}
+          className="w-4/5 max-w-6"
+        />
+      );
 };
 
 export interface Friend {
