@@ -1,10 +1,9 @@
 import { useStore } from "./useStore";
-import { formatCurrency } from "@/lib/utils";
 
-export const calculateFriendTotal = (friendId: string): string => {
+export const calculateFriendTotal = (friendId: string): number => {
     const { items, friends } = useStore.getState();
 
-    const total = items.reduce((total, item) => {
+    return items.reduce((total, item) => {
         if (item.assignedTo.length === 0) {
             return total + item.price / friends.length;
         }
@@ -13,6 +12,4 @@ export const calculateFriendTotal = (friendId: string): string => {
         }
         return total;
     }, 0);
-
-    return formatCurrency(total);
 };

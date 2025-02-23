@@ -7,6 +7,7 @@ import React, { useRef, useState } from "react";
 import { formatCurrency } from "@/lib/utils";
 import StickyActionBar from "@/components/sticky-action-bar";
 import Image from "next/image";
+import { calculateFriendTotal } from "@/store/calculations";
 
 const Export = () => {
   const { friends, items } = useStore();
@@ -68,18 +69,6 @@ const Export = () => {
     }
   };
 
-  const calculateFriendTotal = (friendId: string) => {
-    return items.reduce((total, item) => {
-      if (item.assignedTo.length === 0) {
-        return total + item.price / friends.length;
-      }
-      if (item.assignedTo.includes(friendId)) {
-        return total + item.price / item.assignedTo.length;
-      }
-      return total;
-    }, 0);
-  };
-
   const countAssignedItems = (friendId: string) => {
     return items.filter((item) => item.assignedTo.includes(friendId)).length;
   };
@@ -113,7 +102,7 @@ const Export = () => {
   return (
     <>
       <div
-        className="flex flex-col gap-8 rounded-3xl border border-neutral-200 bg-white p-6 pb-10"
+        className="flex flex-col gap-8 rounded-3xl border border-neutral-200 bg-white p-4 pb-10"
         ref={receiptRef}
       >
         <div className="mt-2 space-y-0.5 text-center">
@@ -127,12 +116,12 @@ const Export = () => {
             <div key={friend.id}>
               <div
                 className={
-                  "flex w-full items-center justify-between gap-4 rounded-xl"
+                  "flex w-full items-center justify-between gap-4 rounded-xl pr-2"
                 }
               >
                 <div className="flex items-center gap-1.5">
                   <FriendTagProvider friend={friend}>
-                    <FriendTagAvatar />
+                    <FriendTagAvatar className="size-14" />
                   </FriendTagProvider>
                   <div>
                     <h2 className="font-semibold">{friend.name}</h2>

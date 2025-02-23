@@ -1,6 +1,7 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
+import { calculateFriendTotal } from "@/store/calculations";
 
 const colorStyles = {
   yellow: "bg-yellow-200 text-yellow-900",
@@ -73,7 +74,7 @@ export const FriendTag = React.forwardRef<HTMLButtonElement, FriendTagProps>(
           ref={ref}
           variant="outline"
           className={cn(
-            "flex h-auto w-16 flex-col items-center justify-center gap-1.5 border-0 px-1.5 py-1 font-medium hover:bg-transparent",
+            "flex h-auto w-14 flex-col items-center justify-center gap-0.5 border-0 p-0 font-medium hover:bg-transparent",
             className,
           )}
           {...props}
@@ -113,7 +114,7 @@ export const FriendTagAvatar: React.FC<FriendTagAvatarProps> = ({
   return (
     <div
       className={cn(
-        "relative size-16 shrink-0 rounded-full border-2 border-transparent p-0.5 text-lg font-bold",
+        "relative size-14 shrink-0 rounded-full border-2 border-transparent p-0.5 font-bold",
         className,
       )}
       {...props}
@@ -135,13 +136,11 @@ export interface FriendTagNameProps
   extends React.HTMLAttributes<HTMLDivElement> {
   friend?: Friend;
   text?: string;
-  className?: string;
 }
 
 export const FriendTagName: React.FC<FriendTagNameProps> = ({
   text,
   className,
-  children,
   ...props
 }) => {
   let friend: Friend | undefined;
@@ -152,8 +151,11 @@ export const FriendTagName: React.FC<FriendTagNameProps> = ({
   }
   const displayText = text || friend?.name || "";
   return (
-    <div className={cn("w-full text-center", className)} {...props}>
-      <p className="truncate text-sm font-medium">{displayText || children}</p>
+    <div
+      className={cn("w-full text-center text-sm font-medium", className)}
+      {...props}
+    >
+      <p className="truncate">{displayText}</p>
     </div>
   );
 };

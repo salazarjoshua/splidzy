@@ -83,15 +83,15 @@ export function ManageItems() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col rounded-3xl border border-neutral-200 bg-white p-4">
+      <div className="flex min-h-full flex-1 flex-col rounded-3xl border border-neutral-200 bg-white p-4 pt-2">
         {currentItems.map((item, index) => (
-          <div key={item.id}>
+          <div key={item.id} className="-mx-2">
             <Button
               onClick={() => setEditingItem(item)}
               variant="secondary"
-              className="relative h-auto w-full rounded-2xl bg-transparent p-4"
+              className="relative h-auto w-full rounded-2xl bg-transparent px-4 py-3"
             >
-              <div className="w-full flex-1 space-y-1">
+              <div className="w-full flex-1">
                 <div className="flex items-center justify-between gap-2 md:gap-8">
                   <h3 className="flex-1 truncate text-left">{item.name}</h3>
                   <div className="shrink-0">{formatCurrency(item.price)}</div>
