@@ -56,24 +56,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-const ButtonIcon = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div
-      className={cn(
-        "absolute right-0 top-0 flex -translate-y-[2px] translate-x-[2px] items-center justify-center rounded-full border-2 border-black bg-white p-0.5 text-black [&_svg]:size-3 [&_svg]:shrink-0",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
-};
-ButtonIcon.displayName = "ButtonIcon";
-
-export { Button, ButtonIcon, buttonVariants };
+export { Button, buttonVariants };

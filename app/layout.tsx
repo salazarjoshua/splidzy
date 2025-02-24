@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Nav from "@/components/nav";
 
 const sfProRounded = localFont({
   src: [
@@ -76,7 +77,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfProRounded.variable} font-sans antialiased`}>
-        <div className="mx-auto flex min-h-dvh max-w-md flex-col justify-end gap-2 px-4 pb-4 pt-8">
+        <div className="mx-auto flex min-h-dvh max-w-md flex-col gap-2 px-4 pb-4">
+          <Nav />
           {children}
         </div>
       </body>

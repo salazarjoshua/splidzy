@@ -24,8 +24,8 @@ export function ManageItems() {
   ) => {
     if (isAllFriends) {
       return (
-        <div className="flex h-[28px] items-center gap-0.5 text-neutral-600">
-          <Image src="/tossface/pie.svg" width={20} height={20} alt="" />
+        <div className="flex h-[28px] items-center gap-1 text-neutral-600">
+          <Image src="/tossface/dizzy.svg" width={16} height={16} alt="" />
           <span>{`Everyone's in! `}</span>
         </div>
       );
