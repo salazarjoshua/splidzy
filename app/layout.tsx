@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "@/components/nav";
+import HydrateStore from "@/store/hydrate-store";
 
 const sfProRounded = localFont({
   src: [
@@ -77,6 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfProRounded.variable} font-sans antialiased`}>
+        <HydrateStore />
         <div className="mx-auto flex min-h-dvh max-w-md flex-col gap-2 px-4 pb-4">
           <Nav />
           {children}

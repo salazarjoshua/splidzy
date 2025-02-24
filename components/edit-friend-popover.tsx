@@ -101,7 +101,7 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
                   removeFriend(friend.id);
                   setIsOpen(false);
                 }}
-                className="bg-red-50 text-red-500 hover:bg-red-100"
+                variant={"destructive"}
               >
                 <Trash className="size-4" />
               </Button>
