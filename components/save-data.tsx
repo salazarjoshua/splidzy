@@ -47,9 +47,9 @@ const SaveData = () => {
         onOpenChange={setDialogOpen}
         title="Manage Data"
       >
-        <div className="flex w-full items-center gap-2 rounded-2xl pl-1">
+        <div className="flex w-full items-center justify-center gap-2 rounded-2xl pl-1">
           <Image src={"/tossface/file-box.svg"} alt="" width={24} height={24} />
-          <p className="text-xs font-medium text-neutral-500 md:text-balance">
+          <p className="text-sm font-medium text-neutral-500 md:text-balance">
             {"Everything is saved on your device, not the internet."}
           </p>
         </div>

@@ -34,7 +34,7 @@ const About = () => {
           </p>
           <p>{`No stress, no spreadsheets—just tap, split, and vibe. 🎶💸`}</p>
           <div className="!mt-8 flex flex-wrap gap-1.5">
-            <Button variant="outline" size="withIcon" asChild>
+            <Button variant="outline" asChild>
               <Link href={"https://joshuasalazar.me/"} target="_blank">
                 <Image
                   src={avatar}
@@ -48,7 +48,7 @@ const About = () => {
               </Link>
             </Button>
 
-            <Button variant="outline" size="withIcon" asChild>
+            <Button variant="outline" asChild>
               <Link
                 href={"https://github.com/salazarjoshua/splidzy"}
                 target="_blank"

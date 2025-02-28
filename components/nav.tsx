@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import TipJar from "./tip-jar";
 import SaveData from "./save-data";
 
 const Nav = () => {
@@ -28,23 +29,9 @@ const Nav = () => {
         )}
       </div>
       <div className="flex gap-1">
+        <TipJar />
+
         <SaveData />
-        <Button
-          variant={"ghost"}
-          size={"icon"}
-          asChild
-          className="border-0 bg-transparent"
-        >
-          <Link href="/about/general">
-            <Image
-              src={"/tossface/settings.svg"}
-              alt=""
-              width={24}
-              height={24}
-              className="transition-transform duration-500 group-hover:rotate-180"
-            />
-          </Link>
-        </Button>
       </div>
     </nav>
   );
