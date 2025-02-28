@@ -4,6 +4,12 @@ import { Button } from "./ui/button";
 import Image from "next/image";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const TipJar = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -26,14 +32,26 @@ const TipJar = () => {
 
   return (
     <>
-      <Button
-        onClick={() => setDialogOpen(true)}
-        variant={"ghost"}
-        size={"icon"}
-        className="transition-transform hover:rotate-[8deg] group-hover:scale-105"
-      >
-        <Image src={"/tossface/heart.svg"} alt="" width={24} height={24} />
-      </Button>
+      <TooltipProvider delayDuration={100}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={() => setDialogOpen(true)}
+              variant={"ghost"}
+              size={"icon"}
+              className="transition-transform hover:-translate-y-0.5 hover:scale-105"
+            >
+              <Image
+                src={"/tossface/heart.svg"}
+                alt=""
+                width={24}
+                height={24}
+              />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="text-xs">tip jar</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <ResponsiveDialogDrawer
         open={dialogOpen}
@@ -41,7 +59,6 @@ const TipJar = () => {
         title="Tip Jar"
       >
         <div className="flex w-full items-center justify-center gap-2 rounded-2xl pl-1">
-          {/* <Image src={"/tossface/heart.svg"} alt="" width={24} height={24} /> */}
           <p className="text-center text-sm font-medium text-neutral-500 md:text-balance">
             If you find Splidzy helpful, consider{" "}
             <span className="font-semibold text-neutral-950">
@@ -51,12 +68,7 @@ const TipJar = () => {
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <Button
-            // variant="secondary"
-            size={"lg"}
-            className="flex-0 flex-row"
-            asChild
-          >
+          <Button size={"lg"} className="flex-0 flex-row" asChild>
             <Link href="https://ko-fi.com/tiktilaok" target="_blank">
               <Image
                 src={"/tossface/heart.svg"}

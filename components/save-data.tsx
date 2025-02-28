@@ -4,6 +4,12 @@ import { Button } from "./ui/button";
 import Image from "next/image";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import { useStore } from "@/store/useStore";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const SaveData = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -33,14 +39,21 @@ const SaveData = () => {
 
   return (
     <>
-      <Button
-        onClick={() => setDialogOpen(true)}
-        variant={"ghost"}
-        size={"icon"}
-        className="transition-transform hover:-translate-y-0.5 hover:-rotate-[8deg]"
-      >
-        <Image src={"/tossface/save.svg"} alt="" width={24} height={24} />
-      </Button>
+      <TooltipProvider delayDuration={100}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={() => setDialogOpen(true)}
+              variant={"ghost"}
+              size={"icon"}
+              className="transition-transform hover:-translate-y-0.5 hover:scale-105"
+            >
+              <Image src={"/tossface/save.svg"} alt="" width={24} height={24} />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="text-xs">manage data</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <ResponsiveDialogDrawer
         open={dialogOpen}
