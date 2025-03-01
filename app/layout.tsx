@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "@/components/nav";
 import HydrateStore from "@/store/hydrate-store";
+import { Toaster } from "@/components/ui/sonner";
 
 const sfProRounded = localFont({
   src: [
@@ -83,6 +84,27 @@ export default function RootLayout({
           <Nav />
           {children}
         </div>
+        <Toaster
+          visibleToasts={1}
+          duration={2000}
+          position="top-center"
+          offset={16}
+          mobileOffset={{ top: 16, left: 0, right: 0 }}
+          icons={{
+            success: (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src="/tossface/check.svg" alt="" />
+            ),
+            error: (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src="/tossface/double-exclamation.svg" alt="" />
+            ),
+            loading: (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src="/tossface/hourglass.svg" alt="" className="!w-4" />
+            ),
+          }}
+        />
       </body>
     </html>
   );

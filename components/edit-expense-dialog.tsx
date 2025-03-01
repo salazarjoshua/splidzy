@@ -118,7 +118,7 @@ export function EditItemDialog({
 
   return (
     <ResponsiveDialogDrawer
-      title="Edit item"
+      title="Edit expense"
       open={open}
       onOpenChange={onOpenChange}
     >

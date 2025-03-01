@@ -10,31 +10,74 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { toast } from "sonner";
 
 const SaveData = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const { clearData } = useStore();
 
-  const handleSaveAllData = () => {
+  const handleSaveAllData = async () => {
     const { friends, items } = useStore.getState();
-    localStorage.setItem("splidzy", JSON.stringify({ friends, items }));
     setDialogOpen(false);
-    alert("All data saved!");
+
+    await toast.promise(
+      new Promise<void>((resolve, reject) => {
+        try {
+          localStorage.setItem("splidzy", JSON.stringify({ friends, items }));
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      }),
+      {
+        loading: "Saving...",
+        success: "Saved",
+        error: "Something went wrong",
+      },
+    );
   };
 
-  const handleSaveFriends = () => {
+  const handleSaveFriends = async () => {
     const { friends } = useStore.getState();
-    localStorage.setItem("splidzy_friends", JSON.stringify({ friends }));
     setDialogOpen(false);
-    alert("Friends data saved!");
+
+    await toast.promise(
+      new Promise<void>((resolve, reject) => {
+        try {
+          localStorage.setItem("splidzy_friends", JSON.stringify({ friends }));
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      }),
+      {
+        loading: "Saving...",
+        success: "Saved",
+        error: "Something went wrong",
+      },
+    );
   };
 
-  const handleClearData = () => {
-    localStorage.removeItem("splidzy");
-    localStorage.removeItem("splidzy_friends");
+  const handleClearData = async () => {
     setDialogOpen(false);
-    clearData();
-    alert("All data cleared!");
+
+    await toast.promise(
+      new Promise<void>((resolve, reject) => {
+        try {
+          localStorage.removeItem("splidzy");
+          localStorage.removeItem("splidzy_friends");
+          clearData();
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      }),
+      {
+        loading: "Clearing...",
+        success: "Cleared",
+        error: "Something went wrong",
+      },
+    );
   };
 
   return (
