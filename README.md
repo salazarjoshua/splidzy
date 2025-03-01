@@ -1,6 +1,6 @@
 # splidzy - split bills, stay besties ✌️
 
-Splidzy is the **coolest bill-splitting calculator** designed to make group payments effortless. Just **add besties, add bills, and split**. Quickly export receipts as text or images and drop them into your group chat.
+Splidzy is the **coolest bill-splitting tool** designed to make group payments effortless. Just **add besties, add bills, and split**. Quickly export receipts as text or images and drop them into your group chat.
 
 ## 🚀 Features
 
