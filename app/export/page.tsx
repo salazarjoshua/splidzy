@@ -1,13 +1,13 @@
 "use client";
-import { FriendTagAvatar } from "@/components/friend-tag";
-import { Download } from "@/components/icons";
-import { Button, ButtonIcon } from "@/components/ui/button";
+import { FriendTagAvatar, FriendTagProvider } from "@/components/friend-tag";
+import { Button } from "@/components/ui/button";
 import { useStore } from "@/store/useStore";
 import { toPng } from "html-to-image";
-import Link from "next/link";
 import React, { useRef, useState } from "react";
-import { ArrowLeft } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import StickyActionBar from "@/components/sticky-action-bar";
+import Image from "next/image";
+import { calculateFriendTotal } from "@/store/calculations";
 
 const Export = () => {
   const { friends, items } = useStore();
@@ -60,25 +60,13 @@ const Export = () => {
         );
 
         const link = document.createElement("a");
-        link.download = "receipt-paymixx.png";
+        link.download = "receipt-splidzy.png";
         link.href = pngDataUrl;
         link.click();
       } catch (error) {
         console.error("Failed to generate image:", error);
       }
     }
-  };
-
-  const calculateFriendTotal = (friendId: string) => {
-    return items.reduce((total, item) => {
-      if (item.assignedTo.length === 0) {
-        return total + item.price / friends.length;
-      }
-      if (item.assignedTo.includes(friendId)) {
-        return total + item.price / item.assignedTo.length;
-      }
-      return total;
-    }, 0);
   };
 
   const countAssignedItems = (friendId: string) => {
@@ -112,21 +100,9 @@ const Export = () => {
   };
 
   return (
-    <section className="mx-auto flex flex-col gap-4 sm:max-w-md">
-      <div className="flex items-center justify-between">
-        <Button
-          asChild
-          variant={"outline"}
-          size={"icon"}
-          className="rounded-xl font-medium text-neutral-500"
-        >
-          <Link href={"/"}>
-            <ArrowLeft size={16} />
-          </Link>
-        </Button>
-      </div>
+    <>
       <div
-        className="flex flex-col gap-8 rounded-3xl border border-neutral-200 bg-white p-6 pb-10"
+        className="flex flex-col gap-8 rounded-3xl border border-neutral-200 bg-white p-4 pb-10"
         ref={receiptRef}
       >
         <div className="mt-2 space-y-0.5 text-center">
@@ -140,15 +116,13 @@ const Export = () => {
             <div key={friend.id}>
               <div
                 className={
-                  "flex w-full items-center justify-between gap-4 rounded-xl"
+                  "flex w-full items-center justify-between gap-4 rounded-xl pr-2"
                 }
               >
                 <div className="flex items-center gap-1.5">
-                  <FriendTagAvatar
-                    name={friend.name}
-                    color={friend.color}
-                    className="size-14"
-                  />
+                  <FriendTagProvider friend={friend}>
+                    <FriendTagAvatar className="size-14" />
+                  </FriendTagProvider>
                   <div>
                     <h2 className="font-semibold">{friend.name}</h2>
                     <p className="text-sm text-neutral-500">
@@ -173,36 +147,37 @@ const Export = () => {
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-between gap-2">
+
+      <StickyActionBar>
         <Button
           onClick={handleCopyReceiptText}
-          variant={"outline"}
-          className="relative overflow-hidden"
+          variant="secondary"
+          size={"lg"}
           disabled={friends.length === 0}
         >
-          <span
-            className={`${isCopied ? "-translate-y-[150%]" : "translate-y-0"} transition-all`}
-          >
-            Copy as text
-          </span>
-          <span
-            className={`${isCopied ? "translate-y-0" : "translate-y-[150%]"} absolute left-1/2 -translate-x-1/2 transition-all`}
-          >
-            Copied 🥳
-          </span>
+          {isCopied ? (
+            <Image src={"/tossface/check.svg"} alt="" width={24} height={24} />
+          ) : (
+            <Image
+              src={"/tossface/clipboard.svg"}
+              alt=""
+              width={24}
+              height={24}
+            />
+          )}
+          {isCopied ? "Copied" : "Copy as text"}
         </Button>
         <Button
           onClick={exportReceipt}
-          className="relative flex-1"
+          variant="secondary"
+          size={"lg"}
           disabled={friends.length === 0}
         >
-          <ButtonIcon>
-            <Download />
-          </ButtonIcon>
-          Export as image
+          <Image src={"/tossface/download.svg"} alt="" width={24} height={24} />
+          Download Image
         </Button>
-      </div>
-    </section>
+      </StickyActionBar>
+    </>
   );
 };
 

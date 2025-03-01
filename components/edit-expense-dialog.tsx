@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FriendTag } from "./friend-tag";
+import { FriendTag, FriendTagAvatar, FriendTagName } from "./friend-tag";
 import { useStore } from "@/store/useStore";
 import { Check, Trash } from "./icons";
 import { Item, Friend } from "@/types";
@@ -14,6 +14,7 @@ import {
   validatePrice,
 } from "@/lib/validate-inputs";
 import { cn } from "@/lib/utils";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 interface EditItemDialogProps {
   open: boolean;
@@ -117,7 +118,7 @@ export function EditItemDialog({
 
   return (
     <ResponsiveDialogDrawer
-      title="Edit item"
+      title="Edit expense"
       open={open}
       onOpenChange={onOpenChange}
     >
@@ -137,6 +138,7 @@ export function EditItemDialog({
             name="price"
             type="number"
             step="0.01"
+            inputMode="numeric"
             value={localItem?.price || ""}
             onChange={handleInputChange}
             placeholder="Price"
@@ -156,32 +158,51 @@ export function EditItemDialog({
           <Switch checked={selectAll} onCheckedChange={handleSelectAllToggle} />
         </div>
 
-        <div
+        <ScrollArea
           className={cn(
-            "-mx-6 -mb-2 -mt-4 overflow-x-hidden transition-colors",
+            "-mx-6 -my-2 [&>div]:py-2",
             friendsIsError && "bg-red-50/75",
           )}
         >
           <div
             className={cn(
-              "no-scrollbar flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2",
+              "flex gap-1.5 px-6",
               friendsIsError && "animate-shake",
             )}
           >
-            {friends.map((friend) => (
-              <FriendTag
-                type="button"
-                key={friend.id}
-                onClick={() => toggleFriendAssignment(friend.id)}
-                name={friend.name}
-                color={friend.color}
-                selected={localItem?.assignedTo.includes(friend.id)}
-                friendTagVariant="select"
-                className="bg-transparent"
-              />
-            ))}
+            {friends.map((friend) => {
+              const isAssigned = localItem?.assignedTo.includes(friend.id);
+
+              return (
+                <FriendTag
+                  key={friend.id}
+                  friend={friend}
+                  type="button"
+                  onClick={() => toggleFriendAssignment(friend.id)}
+                  className="bg-transparent"
+                >
+                  <FriendTagAvatar
+                    className={cn(
+                      "border-neutral-200",
+                      isAssigned && "border-green-500",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "absolute bottom-0 right-0 flex h-5 w-5 translate-x-1 items-center justify-center rounded-full border-2 bg-white transition-transform",
+                        isAssigned && "border-white text-green-500",
+                      )}
+                    >
+                      {isAssigned && <Check className="h-4 w-4" />}
+                    </div>
+                  </FriendTagAvatar>
+                  <FriendTagName />
+                </FriendTag>
+              );
+            })}
           </div>
-        </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
         <div className="flex justify-end gap-2 border-t border-neutral-200 pt-6">
           <Button

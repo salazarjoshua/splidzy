@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Footer from "@/components/footer";
+import Nav from "@/components/nav";
+import HydrateStore from "@/store/hydrate-store";
+import { Toaster } from "@/components/ui/sonner";
 
 const sfProRounded = localFont({
   src: [
@@ -77,8 +79,32 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfProRounded.variable} font-sans antialiased`}>
-        <div className="relative z-[1] mb-48 px-4 pt-12">{children}</div>
-        <Footer />
+        <HydrateStore />
+        <div className="mx-auto flex min-h-dvh max-w-md flex-col gap-2 px-4 pb-4">
+          <Nav />
+          {children}
+        </div>
+        <Toaster
+          visibleToasts={1}
+          duration={2000}
+          position="top-center"
+          offset={16}
+          mobileOffset={{ top: 16, left: 0, right: 0 }}
+          icons={{
+            success: (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src="/tossface/check.svg" alt="" />
+            ),
+            error: (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src="/tossface/double-exclamation.svg" alt="" />
+            ),
+            loading: (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src="/tossface/hourglass.svg" alt="" className="!w-4" />
+            ),
+          }}
+        />
       </body>
     </html>
   );

@@ -10,23 +10,21 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-neutral-900 text-neutral-50 hover:bg-neutral-900/90 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50/90",
+          "bg-neutral-900 text-neutral-50 hover:bg-neutral-950 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50/90",
         destructive:
-          "bg-red-500 text-neutral-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-neutral-50 dark:hover:bg-red-900/90",
+          "bg-red-50 text-red-500 hover:bg-red-100 dark:bg-red-900 dark:text-neutral-50 dark:hover:bg-red-900/90",
         outline:
           "border border-neutral-200 bg-white hover:bg-neutral-50 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 ",
         secondary:
           "bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80",
-        ghost: "bg-neutral-200  hover:text-neutral-900 text-neutral-500",
-        link: "text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50",
+        ghost: "bg-transparent  hover:text-neutral-900 ",
+        link: "text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50 rounded-sm",
       },
       size: {
         default: "h-12 px-4 py-2",
         sm: "px-4 py-0.5",
-        lg: "px-8",
-        icon: "size-8 [&_svg]:size-4 [&_svg]:shrink-0 rounded-full",
-        withIcon:
-          "rounded-full p-1 pr-3 [&_svg]:size-3.5 [&_svg]:shrink-0 text-sm gap-1.5",
+        lg: "h-20 flex-1 flex-col gap-2 rounded-2xl p-2 text-sm",
+        icon: "size-8 [&_svg]:size-4 [&_svg]:shrink-0 rounded-xl",
       },
     },
     defaultVariants: {
@@ -56,24 +54,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-const ButtonIcon = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div
-      className={cn(
-        "absolute right-0 top-0 flex -translate-y-[2px] translate-x-[2px] items-center justify-center rounded-full border-2 border-black bg-white p-0.5 text-black [&_svg]:size-3 [&_svg]:shrink-0",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
-};
-ButtonIcon.displayName = "ButtonIcon";
-
-export { Button, ButtonIcon, buttonVariants };
+export { Button, buttonVariants };

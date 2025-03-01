@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { FriendTagAvatar } from "./friend-tag";
-import { EditItemDialog } from "@/components/edit-item-dialog";
+import { FriendTagProvider, FriendTagAvatar } from "./friend-tag";
+import { EditItemDialog } from "@/components/edit-expense-dialog";
 import { useStore } from "@/store/useStore";
 import type { Item } from "@/types";
 import React from "react";
 import DashedUnderline from "./ui/dashed-underline";
-import Link from "next/link";
-import { AddItems } from "./add-items";
 import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
+import { AddExpenseButton } from "./add-expense-button";
 
 export function ManageItems() {
   const { friends, items, editItem } = useStore();
@@ -19,19 +18,14 @@ export function ManageItems() {
 
   const currentItems = items;
 
-  const total = currentItems.reduce((sum, item) => {
-    const amount = item.price;
-    return sum + amount;
-  }, 0);
-
   const renderAssignedFriends = (
     isAllFriends: boolean,
     assignedTo: string[],
   ) => {
     if (isAllFriends) {
       return (
-        <div className="flex items-center gap-1 text-neutral-600">
-          <Image src="/bff.webp" width={28} height={28} alt="" />
+        <div className="flex h-[28px] items-center gap-1 text-neutral-600">
+          <Image src="/tossface/dizzy.svg" width={16} height={16} alt="" />
           <span>{`Everyone's in! `}</span>
         </div>
       );
@@ -47,12 +41,9 @@ export function ManageItems() {
       <div className="flex items-center gap-1">
         <div className="flex -space-x-1.5">
           {displayedFriends.map((friend) => (
-            <FriendTagAvatar
-              key={friend.id}
-              name={friend.name}
-              color={friend.color}
-              className="size-7 border-2 border-white p-0 text-xs"
-            />
+            <FriendTagProvider key={friend.id} friend={friend}>
+              <FriendTagAvatar className="size-7 border-2 border-white p-0 text-xs" />
+            </FriendTagProvider>
           ))}
         </div>
         {remainingCount > 0 && (
@@ -62,19 +53,42 @@ export function ManageItems() {
     );
   };
 
+  if (currentItems.length === 0)
+    return (
+      <div className="flex min-h-full flex-1 flex-col items-center justify-center rounded-3xl border border-neutral-200 bg-white p-4 text-center text-sm font-medium">
+        <div className="mb-2 flex gap-0.5">
+          <Image
+            src={"/tossface/spaghetti.svg"}
+            alt=""
+            width={18}
+            height={18}
+          />
+          <Image src={"/tossface/disco.svg"} alt="" width={18} height={18} />
+          <Image src={"/tossface/dizzy.svg"} alt="" width={18} height={18} />
+          <Image src={"/tossface/beach.svg"} alt="" width={18} height={18} />
+        </div>
+        <h2 className="mb-2.5 text-neutral-500">
+          All expenses will appear right here.
+        </h2>
+        <AddExpenseButton variant="link" className="h-auto p-0">
+          + Add Expense
+        </AddExpenseButton>
+      </div>
+    );
+
   return (
     <>
-      <div className="flex w-full flex-col rounded-3xl border border-neutral-200 bg-white p-4">
+      <div className="flex min-h-full flex-1 flex-col rounded-3xl border border-neutral-200 bg-white p-4 pt-2">
         {currentItems.map((item, index) => (
-          <div key={item.id}>
+          <div key={item.id} className="-mx-2">
             <Button
               onClick={() => setEditingItem(item)}
               variant="secondary"
-              className="relative h-auto w-full rounded-2xl bg-transparent p-4"
+              className="relative h-auto w-full rounded-2xl bg-transparent px-4 py-3"
             >
-              <div className="flex-1 space-y-1">
+              <div className="w-full flex-1">
                 <div className="flex items-center justify-between gap-2 md:gap-8">
-                  <h3 className="truncate">{item.name}</h3>
+                  <h3 className="flex-1 truncate text-left">{item.name}</h3>
                   <div className="shrink-0">{formatCurrency(item.price)}</div>
                 </div>
                 <div className="flex items-center justify-between gap-8 font-normal text-neutral-500">
@@ -94,15 +108,7 @@ export function ManageItems() {
             )}
           </div>
         ))}
-
-        <div className={`${currentItems.length !== 0 && "mt-4"}`}>
-          <AddItems />
-        </div>
       </div>
-
-      <Button asChild className="relative w-full">
-        <Link href={"export"}>Split Bills - ({total})</Link>
-      </Button>
 
       <EditItemDialog
         open={!!editingItem}

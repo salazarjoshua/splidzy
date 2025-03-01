@@ -2,13 +2,15 @@ import React, { useCallback, useRef, useState } from "react";
 import { useStore, colors } from "@/store/useStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import Image from "next/image";
 import { ResponsiveDialogDrawer } from "./ui/responsive-dialog-drawer";
 import { Friend } from "@/types";
-import { FriendTag } from "./friend-tag";
+import { Minus } from "lucide-react";
+import { FriendTag, FriendTagAvatar, FriendTagName } from "./friend-tag";
 import { v4 as uuidv4 } from "uuid";
 import { Check } from "./icons";
 import { checkValidInput } from "@/lib/validate-inputs";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 const AddFriends = () => {
   const { friends, addFriend } = useStore();
@@ -64,17 +66,9 @@ const AddFriends = () => {
 
   return (
     <>
-      <Button
-        className="flex size-16 h-auto w-16 flex-col items-center justify-center gap-1.5 border-0 bg-transparent px-1.5 py-1 text-sm font-medium hover:bg-transparent"
-        variant="secondary"
-        onClick={() => setIsOpen(true)}
-      >
-        <div className="flex size-16 items-center justify-center">
-          <div className="relative flex aspect-square size-14 items-center justify-center rounded-full border-2 border-dashed border-neutral-200 bg-white text-neutral-500 transition-colors group-hover:bg-neutral-100 group-hover:text-neutral-900">
-            <Plus strokeWidth="3" size={16} />
-          </div>
-        </div>
-        Add
+      <Button variant="secondary" size={"lg"} onClick={() => setIsOpen(true)}>
+        <Image src={"/tossface/friends.svg"} alt="" width={24} height={24} />
+        Add Friends
       </Button>
 
       <ResponsiveDialogDrawer
@@ -104,20 +98,25 @@ const AddFriends = () => {
             </Button>
           </form>
 
-          <div
-            ref={friendsListRef}
-            className="no-scrollbar -mx-6 -my-2 flex gap-1.5 overflow-x-auto scroll-smooth px-6 py-2"
-          >
-            {localFriends.map((friend) => (
-              <FriendTag
-                key={friend.id}
-                name={friend.name}
-                color={friend.color}
-                onClick={() => removeLocalFriend(friend.id)}
-                friendTagVariant="delete"
-              />
-            ))}
-          </div>
+          <ScrollArea ref={friendsListRef} className="-mx-6 -my-2 [&>div]:py-2">
+            <div className="flex gap-1.5 px-6">
+              {localFriends.map((friend) => (
+                <FriendTag
+                  key={friend.id}
+                  friend={friend}
+                  onClick={() => removeLocalFriend(friend.id)}
+                >
+                  <FriendTagAvatar>
+                    <div className="absolute left-0 top-0 flex size-5 -translate-x-1 items-center justify-center rounded-full bg-neutral-200 text-neutral-600 transition-colors group-hover:bg-red-500 group-hover:text-white [&_svg]:size-3">
+                      <Minus strokeWidth={3} />
+                    </div>
+                  </FriendTagAvatar>
+                  <FriendTagName />
+                </FriendTag>
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
 
           <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-6">
             <div className="text-sm font-medium text-neutral-400">

@@ -11,9 +11,15 @@ import {
 } from "@/components/ui/popover";
 import { useStore } from "@/store/useStore";
 import type { Friend } from "@/types";
-import { FriendTag } from "./friend-tag";
+import { FriendTag, FriendTagAvatar, FriendTagName } from "./friend-tag";
 import { useState } from "react";
 import { checkValidInput } from "@/lib/validate-inputs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface EditFriendPopoverProps {
   friend: Friend;
@@ -47,7 +53,10 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
       }}
     >
       <PopoverTrigger asChild>
-        <FriendTag name={friend.name} color={friend.color} />
+        <FriendTag friend={friend}>
+          <FriendTagAvatar />
+          <FriendTagName />
+        </FriendTag>
       </PopoverTrigger>
       <PopoverContent className="w-full min-w-[256px] rounded-2xl p-2">
         <form onSubmit={handleSave} className="flex flex-col gap-2">
@@ -68,16 +77,35 @@ export function EditFriendPopover({ friend }: EditFriendPopoverProps) {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              onClick={() => {
-                removeFriend(friend.id);
-                setIsOpen(false);
-              }}
-              className="bg-red-50 text-red-500 hover:bg-red-100"
-            >
-              <Trash className="size-4" />
-            </Button>
+            {friend.id === "itzyitzy" ? (
+              <TooltipProvider delayDuration={100}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button
+                      type="button"
+                      className="bg-red-50 text-red-500 hover:bg-red-100 disabled:bg-neutral-100 disabled:text-neutral-300 disabled:opacity-100"
+                      disabled
+                    >
+                      <Trash className="size-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="text-xs">
+                    {"can't delete urself bro"}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <Button
+                type="button"
+                onClick={() => {
+                  removeFriend(friend.id);
+                  setIsOpen(false);
+                }}
+                variant={"destructive"}
+              >
+                <Trash className="size-4" />
+              </Button>
+            )}
             <Button
               type="submit"
               className="flex-1 bg-green-500 text-green-50 hover:bg-green-500/90"

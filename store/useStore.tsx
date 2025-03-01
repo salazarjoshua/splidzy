@@ -2,17 +2,6 @@ import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
 import { Friend, Item } from "@/types";
 
-interface ReceiptStore {
-  friends: Friend[];
-  items: Item[];
-  addFriend: (name: string) => void;
-  editFriend: (id: string, name: string) => void;
-  removeFriend: (id: string) => void;
-  addItem: (item: Omit<Item, "id">) => void;
-  editItem: (item: Item) => void;
-  removeItem: (id: string) => void;
-}
-
 export const colors: (
   | "yellow"
   | "lavender"
@@ -22,9 +11,28 @@ export const colors: (
   | "lime"
 )[] = ["yellow", "lavender", "sky", "peach", "rose", "lime"];
 
+const defaultFriends: Friend[] = [
+  { id: "itzyitzy", name: "Me", color: colors[0] },
+];
+const defaultItems: Item[] = [];
+
+interface ReceiptStore {
+  friends: Friend[];
+  items: Item[];
+  setHydratedData: (friends: Friend[], items: Item[]) => void;
+  addFriend: (name: string) => void;
+  editFriend: (id: string, name: string) => void;
+  removeFriend: (id: string) => void;
+  addItem: (item: Omit<Item, "id">) => void;
+  editItem: (item: Item) => void;
+  removeItem: (id: string) => void;
+  clearData: () => void;
+}
+
 export const useStore = create<ReceiptStore>((set) => ({
-  friends: [{ id: "itzyitzy", name: "Me", color: colors[0] }],
-  items: [],
+  friends: defaultFriends,
+  items: defaultItems,
+  setHydratedData: (friends, items) => set({ friends, items }),
 
   addFriend: (name) =>
     set((state) => {
@@ -84,5 +92,10 @@ export const useStore = create<ReceiptStore>((set) => ({
   removeItem: (id) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),
+    })),
+  clearData: () =>
+    set(() => ({
+      friends: defaultFriends,
+      items: defaultItems,
     })),
 }));

@@ -8,7 +8,7 @@ html {
 }
 
 body {
-  @apply bg-neutral-50 text-neutral-900;
+  @apply bg-neutral-100 text-neutral-900;
 }
 
 @layer utilities {
@@ -50,4 +50,20 @@ input[type="number"] {
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+[data-sonner-toaster] {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important ;
+}
+
+[data-sonner-toast][data-styled="true"] [data-icon] {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.sonner-loader {
+  width: 16px !important;
+  height: 16px !important;
 }
